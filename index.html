@@ -1950,11 +1950,14 @@ function doAction(){
 }
 
 // ── Start ─────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', ()=>{ setTimeout(initCat, 300); });
-if(document.readyState !== 'loading') setTimeout(initCat, 300);
+window.initCat = initCat;
+document.addEventListener('DOMContentLoaded', ()=>{ setTimeout(initCat, 400); });
+if(document.readyState !== 'loading') setTimeout(initCat, 400);
 
 })();
 
+// ── Init ──
+function init(){
   load();
   resetRecurring();
   setDate();
@@ -1964,6 +1967,7 @@ if(document.readyState !== 'loading') setTimeout(initCat, 300);
   scheduleMidnightSend();
 }
 init();
+setTimeout(()=>{ if(typeof initCat==='function') initCat(); }, 100);
 
 </script>
 </body>
