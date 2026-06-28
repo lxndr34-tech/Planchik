@@ -379,32 +379,6 @@ button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus
 .more-btn{background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;padding:0;min-width:32px;min-height:32px;line-height:1;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:6px;transition:color .15s var(--ease),background .15s var(--ease)}
 .more-btn:hover{color:var(--mint);background:rgba(89,227,214,0.1)}
 
-/* ---- Subtasks ---- */
-.subtasks{margin:0;padding:8px 10px 10px 44px;display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--border)}
-.subtask-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);min-height:32px;border-radius:6px;padding:3px 6px;transition:background .12s var(--ease)}
-.subtask-row:hover{background:rgba(255,255,255,0.04)}
-.sub-check{width:18px;height:18px;min-width:18px;border-radius:5px;border:1.5px solid var(--border2);background:transparent;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:0;transition:all .18s var(--ease)}
-.sub-check:hover{border-color:var(--mint);box-shadow:0 0 5px var(--mint-glow)}
-.sub-check.done{background:var(--mint);border-color:var(--mint)}
-.sub-check svg{display:none;width:9px;height:7px}
-.sub-check.done svg{display:block}
-.subtask-text{flex:1;word-break:break-word;line-height:1.4}
-.subtask-text.done{text-decoration:line-through;color:var(--text3)}
-.sub-del-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:15px;padding:0 3px;line-height:1;flex-shrink:0;opacity:0;transition:opacity .15s var(--ease),color .15s var(--ease)}
-.subtask-row:hover .sub-del-btn{opacity:1}
-.sub-del-btn:hover{color:var(--terra)}
-.sub-edit-text{flex:1;border:none;border-bottom:1px solid var(--mint);background:transparent;color:var(--text);font-size:13px;font-family:inherit;outline:none;padding:2px 0}
-.subtask-add-row{display:flex;gap:6px;align-items:center;margin:6px 10px 2px 44px}
-.subtask-add-row input{flex:1;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:12px;padding:6px 10px;font-family:inherit;outline:none;transition:border-color .2s var(--ease)}
-.subtask-add-row input:focus{border-color:var(--mint)}
-.subtask-add-row .sub-add-confirm{background:var(--mint);border:none;border-radius:6px;color:#0D1117;font-size:11px;font-weight:700;padding:5px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;transition:opacity .15s}
-.subtask-add-row .sub-add-confirm:hover{opacity:.85}
-.subtask-toggle{font-size:11px;color:var(--text3);cursor:pointer;padding:2px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;transition:color .15s var(--ease),background .15s var(--ease);flex-shrink:0;min-width:44px;min-height:44px;justify-content:center}
-.subtask-toggle:hover{color:var(--mint);background:rgba(89,227,214,0.08)}
-.subtask-toggle.open{color:var(--mint)}
-.subtask-toggle svg{transition:transform .2s var(--ease);flex-shrink:0}
-.subtask-toggle.open svg{transform:rotate(90deg)}
-
 /* ---- Context menu ---- */
 .ctx-menu{position:fixed;z-index:300;background:var(--card2);border:1px solid var(--border2);border-radius:var(--r-md);box-shadow:0 16px 36px rgba(0,0,0,.55);padding:6px;min-width:188px;animation:popIn .14s var(--ease) both}
 .ctx-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;font-size:13.5px;color:var(--text2);cursor:pointer;transition:background .12s var(--ease)}
@@ -439,13 +413,6 @@ button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus
 .empty-state{text-align:center;padding:38px 10px 20px;animation:appIn .3s var(--ease) both}
 .empty-emoji{font-size:42px;margin-bottom:10px;display:block;animation:floatY 3s ease-in-out infinite}
 .empty-text{color:var(--text3);font-size:14.5px;line-height:1.6;max-width:240px;margin:0 auto}
-
-/* ---- Archive view ---- */
-.archive-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r-sm);background:var(--card2);border:1px solid var(--border);margin-bottom:6px}
-.archive-text{flex:1;font-size:14px;color:var(--text2);text-decoration:line-through;text-decoration-color:var(--text3)}
-.archive-date{font-size:10.5px;color:var(--text3);flex-shrink:0}
-.archive-restore{background:none;border:1px solid var(--border2);border-radius:7px;color:var(--mint);font-size:11px;padding:4px 9px;cursor:pointer;flex-shrink:0}
-.archive-restore:hover{border-color:var(--mint)}
 
 /* ---- Data / settings additions ---- */
 .settings-section-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.6px;text-transform:uppercase;margin:14px 0 9px}
@@ -797,11 +764,9 @@ function save() {
 function migrateTask(t){
   if(t.repeat===undefined)t.repeat=null;
   if(t.dueDate===undefined)t.dueDate=null;
-  if(t.subtasks===undefined)t.subtasks=[];
   if(t.color===undefined)t.color=null;
   if(t.pinned===undefined)t.pinned=false;
   if(t.completedAt===undefined)t.completedAt=t.done?todayStr():null;
-  if(t.subtasksOpen===undefined)t.subtasksOpen=false;
   return t;
 }
 function load() {
@@ -1168,27 +1133,9 @@ function taskHTML(t,sec,idx,inDoneGroup,showSectionTag) {
     dueHtml=`<span class="task-due${overdue?' overdue':''}${isToday?' today-due':''}">📅 ${fmtDue(t.dueDate)}</span>`;
   }
   const repeatHtml=t.repeat?`<span class="task-repeat-ic" title="${REPEAT_LABELS[t.repeat]}">🔁</span>`:'';
-  const subDone=(t.subtasks||[]).filter(s=>s.done).length;
-  const subTotal=(t.subtasks||[]).length;
-  const subProgress=subTotal?`<span class="task-sub-progress">${subDone}/${subTotal}</span>`:'';
   const colorBar=t.color?`<span class="task-color-bar" style="background:${COLOR_HEX[t.color]}"></span>`:'';
   const pinIc=t.pinned?'<span class="pin-ic" title="Закреплено">📌</span>':'';
   const sectionTag=showSectionTag?`<span class="task-due" style="color:var(--mint)">${SECTIONS[sec].icon} ${SECTIONS[sec].label}</span>`:'';
-  const subList = t.subtasksOpen && subTotal ? `<div class="subtasks">${(t.subtasks||[]).map(s=>`
-    <div class="subtask-row" data-sub-id="${s.id}">
-      <button class="sub-check${s.done?' done':''}"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4L4 7L9 1" stroke="#0D1117" stroke-width="2" stroke-linecap="round"/></svg></button>
-      <span class="subtask-text${s.done?' done':''}">${escHtml(s.text)}</span>
-      <button class="sub-del-btn" data-sub-del="${s.id}" title="Удалить">×</button>
-    </div>`).join('')}
-    <div class="subtask-add-row" id="subAddRow-${t.id}">
-      <input type="text" placeholder="Добавить подзадачу…" id="subAddInp-${t.id}" autocomplete="off">
-      <button class="sub-add-confirm" data-sub-add="1">+</button>
-    </div>
-  </div>` : (t.subtasksOpen && !subTotal ? `<div class="subtasks"><div class="subtask-add-row" id="subAddRow-${t.id}">
-    <input type="text" placeholder="Добавить подзадачу…" id="subAddInp-${t.id}" autocomplete="off">
-    <button class="sub-add-confirm" data-sub-add="1">+</button>
-  </div></div>` : '');
-  const subToggle = `<button class="subtask-toggle${t.subtasksOpen?' open':''}" data-toggle-sub="1" title="${t.subtasksOpen?'Свернуть':'Развернуть'} подзадачи"><svg width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>${subTotal?` ${subDone}/${subTotal}`:''}</button>`;
   return `<div class="task${t.done?' completed':''}${t.pinned?' pinned':''}" data-id="${t.id}" data-sec="${sec}">
     <div class="task-swipe-bg left">🗑️ Удалить</div>
     <div class="task-swipe-bg right">📦 Потом / завтра</div>
@@ -1201,13 +1148,11 @@ function taskHTML(t,sec,idx,inDoneGroup,showSectionTag) {
       <span class="priority-badge ${p.cls}">${p.label}</span>
       <div class="task-text-wrap">
         <span class="task-text${t.done?' done':''}" title="Двойной клик — редактировать">${pinIc}${escHtml(t.text)}</span>
-        <div class="task-meta-row">${dueHtml}${repeatHtml}${subProgress}${rem}${sectionTag}</div>
+        <div class="task-meta-row">${dueHtml}${repeatHtml}${rem}${sectionTag}</div>
       </div>
-      ${subToggle}
       <button class="more-btn" title="Ещё">⋯</button>
       <button class="del-btn" title="Удалить">×</button>
     </div>
-    ${subList}
   </div>`;
 }
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -1257,39 +1202,9 @@ function startEdit(id,sec,el){
   inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();if(e.key==='Escape')render();});
 }
 
-// ── Subtasks ──
-function toggleSubtasksOpen(id,sec){
-  const t=state.tasks[sec].find(x=>x.id===id);if(!t)return;
-  t.subtasksOpen=!t.subtasksOpen;save();render();
-}
-function toggleSubtask(taskId,sec,subId){
-  const t=state.tasks[sec].find(x=>x.id===taskId);if(!t)return;
-  const s=(t.subtasks||[]).find(x=>x.id===subId);if(!s)return;
-  s.done=!s.done;save();render();
-}
-function deleteSubtask(taskId,sec,subId){
-  const t=state.tasks[sec].find(x=>x.id===taskId);if(!t)return;
-  t.subtasks=(t.subtasks||[]).filter(s=>s.id!==subId);
-  save();render();
-}
-function addSubtaskPrompt(taskId,sec){
-  const t=state.tasks[sec].find(x=>x.id===taskId);if(!t)return;
-  if(!t.subtasks)t.subtasks=[];
-  t.subtasksOpen=true;
-  save();render();
-  // Focus the add input after render
-  setTimeout(()=>{
-    const inp=document.getElementById('subAddInp-'+taskId);
-    if(inp)inp.focus();
-  },50);
-}
-
-// ── Pin / color / archive single ──
+// ── Pin / color ──
 function setPinned(id,sec,val){const t=state.tasks[sec].find(x=>x.id===id);if(!t)return;t.pinned=val;save();render();}
 function setColor(id,sec,color){const t=state.tasks[sec].find(x=>x.id===id);if(!t)return;t.color=color||null;save();render();}
-function archiveOne(id,sec){
-  deleteTask(id,sec);
-}
 function clearCompleted(){
   const list=state.tasks[activeSection];
   const done=list.filter(t=>t.done);
@@ -1298,10 +1213,6 @@ function clearCompleted(){
   save();render();
   showToast(`Удалено выполненных: ${done.length}`);
 }
-
-// Archive removed from UI
-
-
 
 // ── Export / Import ──
 function exportData(){
@@ -1479,7 +1390,7 @@ function quickAddTask(){
     id:uid(),text,priority:qa.priority,done:false,
     remindAt:qa.remindAt,reminded:false,
     repeat:qa.repeat||null,dueDate:qa.dueDate||null,
-    subtasks:[],color:qa.color||null,pinned:false,completedAt:null,subtasksOpen:false
+    color:qa.color||null,pinned:false,completedAt:null
   };
   state.tasks[activeSection].unshift(task);
   save();
@@ -1501,37 +1412,6 @@ function wireTaskEvents(listEl){
     content.querySelector('.del-btn').addEventListener('click',()=>deleteTask(id,sec));
     content.querySelector('.task-text').addEventListener('dblclick',()=>startEdit(id,sec,el));
     content.querySelector('.more-btn').addEventListener('click',(e)=>openCtxMenu(id,sec,e));
-    const subToggle=el.querySelector('[data-toggle-sub]');
-    if(subToggle) subToggle.addEventListener('click',()=>toggleSubtasksOpen(id,sec));
-    el.querySelectorAll('.sub-check').forEach(sc=>{
-      sc.addEventListener('click',()=>{
-        const row=sc.closest('.subtask-row');
-        toggleSubtask(id,sec,row.dataset.subId);
-      });
-    });
-    // Subtask delete buttons
-    el.querySelectorAll('.sub-del-btn').forEach(btn=>{
-      btn.addEventListener('click',()=>{
-        const subId=btn.dataset.subDel;
-        deleteSubtask(id,sec,subId);
-      });
-    });
-    // Subtask add
-    const addInp=el.querySelector(`#subAddInp-${id}`);
-    const addBtn=el.querySelector('[data-sub-add]');
-    if(addInp && addBtn){
-      const doAdd=()=>{
-        const text=addInp.value.trim();
-        if(!text)return;
-        const t=state.tasks[sec].find(x=>x.id===id);if(!t)return;
-        if(!t.subtasks)t.subtasks=[];
-        t.subtasks.push({id:uid(),text,done:false});
-        t.subtasksOpen=true;
-        save();render();
-      };
-      addBtn.addEventListener('click',doAdd);
-      addInp.addEventListener('keydown',e=>{if(e.key==='Enter')doAdd();});
-    }
     const handle=el.querySelector('.drag-handle');
     handle.addEventListener('pointerdown',(e)=>startDrag(e,el,id,sec));
     wireSwipe(el,content,id,sec);
@@ -1683,9 +1563,6 @@ function openCtxMenu(id,sec,e){
       <div class="color-dot" data-c="violet"></div>
       <div class="color-dot" data-c="gray"></div>
     </div>
-    <div class="ctx-item" data-act="addsub">☑️ Добавить подзадачу</div>
-    <div class="ctx-sep"></div>
-    <div class="ctx-item" data-act="archive">🗄️ В архив</div>
     <div class="ctx-item danger" data-act="delete">🗑️ Удалить</div>
   `;
   document.body.appendChild(menu);
@@ -1694,8 +1571,6 @@ function openCtxMenu(id,sec,e){
   menu.style.left=Math.max(8,x)+'px';
   menu.style.top=Math.max(8,y)+'px';
   menu.querySelector('[data-act="pin"]').onclick=()=>{setPinned(id,sec,!t.pinned);closeCtxMenu();};
-  menu.querySelector('[data-act="addsub"]').onclick=()=>{closeCtxMenu();addSubtaskPrompt(id,sec);};
-  menu.querySelector('[data-act="archive"]').onclick=()=>{archiveOne(id,sec);closeCtxMenu();};
   menu.querySelector('[data-act="delete"]').onclick=()=>{deleteTask(id,sec);closeCtxMenu();};
   menu.querySelectorAll('.ctx-colors .color-dot').forEach(d=>{
     if(d.dataset.c===(t.color||''))d.classList.add('sel');
