@@ -143,8 +143,11 @@ body{
 .task-text-input{flex:1;font-size:14px;color:var(--text);line-height:1.45;border:none;border-bottom:1.5px solid var(--mint);background:transparent;font-family:inherit;outline:none;padding:2px 0;min-width:0}
 .task-remind{font-size:10px;color:var(--text3);flex-shrink:0;display:flex;align-items:center;gap:2px;white-space:nowrap}
 .task-remind.set{color:var(--mint)}
-.del-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:20px;padding:0;line-height:1;flex-shrink:0;transition:color 0.15s var(--ease),transform 0.15s var(--ease);min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:23px;padding:0;line-height:1;flex-shrink:0;transition:color 0.15s var(--ease),transform 0.15s var(--ease);min-width:34px;min-height:34px;display:flex;align-items:center;justify-content:center;border-radius:6px}
 .del-btn:hover{color:var(--terra);transform:scale(1.12)}
+.task .del-btn{opacity:0;transition:opacity .15s var(--ease),color 0.15s var(--ease),transform 0.15s var(--ease)}
+.task:hover .del-btn,.task:focus-within .del-btn{opacity:1}
+@media (hover:none){.task .del-btn{opacity:.65}}
 .section-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:0.8px;text-transform:uppercase;margin:16px 0 9px}
 .empty{text-align:center;color:var(--text3);font-size:15px;padding:30px 0 16px}
 
@@ -370,11 +373,6 @@ button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus
 .task-text-wrap{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;overflow:hidden}
 .check-btn{position:relative}
 .check-btn.done{animation:ringPulse .3s var(--ease)}
-.task .del-btn,.task .more-btn{opacity:0;transition:opacity .15s var(--ease)}
-.task:hover .del-btn,.task:hover .more-btn,.task:focus-within .del-btn,.task:focus-within .more-btn{opacity:1}
-@media (hover:none){.task .del-btn,.task .more-btn{opacity:.65}}
-.more-btn{background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;padding:0;min-width:32px;min-height:32px;line-height:1;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:6px;transition:color .15s var(--ease),background .15s var(--ease)}
-.more-btn:hover{color:var(--mint);background:rgba(89,227,214,0.1)}
 
 /* ---- Context menu ---- */
 .ctx-menu{position:fixed;z-index:300;background:var(--card2);border:1px solid var(--border2);border-radius:var(--r-md);box-shadow:0 16px 36px rgba(0,0,0,.55);padding:6px;min-width:188px;animation:popIn .14s var(--ease) both}
@@ -544,7 +542,9 @@ button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus
       <button class="chip" data-r="weekdays" onclick="qaSelectRepeat('weekdays')">По будням</button>
       <button class="chip" data-r="weekly" onclick="qaSelectRepeat('weekly')">Раз в неделю</button>
       <button class="chip" data-r="monthly" onclick="qaSelectRepeat('monthly')">Раз в месяц</button>
-      <span class="qa-row-label" style="min-width:auto;margin-left:6px">Напомнить</span>
+    </div>
+    <div class="qa-row">
+      <span class="qa-row-label">Напомнить</span>
       <button class="chip" onclick="qaSetRemindIn(60)">через час</button>
       <button class="chip" onclick="qaSetRemindEvening()">вечером</button>
       <button class="chip" onclick="qaSetRemindTomorrow()">завтра утром</button>
@@ -1127,7 +1127,6 @@ function taskHTML(t,sec,idx,inDoneGroup,showSectionTag) {
         <span class="task-text${t.done?' done':''}" title="Двойной клик — редактировать">${escHtml(t.text)}</span>
         ${metaHtml}
       </div>
-      <button class="more-btn" title="Ещё">⋯</button>
       <button class="del-btn" title="Удалить">×</button>
     </div>
   </div>`;
@@ -1388,11 +1387,9 @@ function wireTaskEvents(listEl){
     content.querySelector('.check-btn').addEventListener('click',()=>toggleTask(id,sec));
     content.querySelector('.del-btn').addEventListener('click',()=>deleteTask(id,sec));
     content.querySelector('.task-text').addEventListener('dblclick',()=>startEdit(id,sec,el));
-    content.querySelector('.more-btn').addEventListener('click',(e)=>openCtxMenu(id,sec,e));
     const handle=el.querySelector('.drag-handle');
     handle.addEventListener('pointerdown',(e)=>startDrag(e,el,id,sec));
     wireSwipe(el,content,id,sec);
-    wireLongPress(content,id,sec,e=>e);
   });
 }
 
