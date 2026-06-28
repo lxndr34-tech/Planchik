@@ -430,6 +430,60 @@ button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus
   .cal-panel{width:calc(100vw - 16px)}
 }
 
+
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
+.header-text{flex:1}
+
+/* ---- Cat mascot ---- */
+.cat-wrap{position:relative;width:52px;height:52px;flex-shrink:0;cursor:pointer;user-select:none}
+.cat-bubble{
+  position:absolute;right:54px;top:50%;transform:translateY(-50%);
+  background:var(--card2);border:1px solid var(--border2);border-radius:12px;
+  padding:6px 10px;font-size:11px;color:var(--text2);white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity .3s var(--ease);
+  box-shadow:0 4px 12px rgba(0,0,0,.25);
+  max-width:160px;white-space:normal;line-height:1.4;text-align:right;
+}
+.cat-bubble::after{
+  content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);
+  width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;
+  border-left:6px solid var(--border2);
+}
+.cat-bubble.show{opacity:1}
+.cat-body{width:52px;height:52px;position:relative}
+
+/* Cat SVG animations */
+@keyframes catBlink{0%,94%,100%{transform:scaleY(1)}96%,98%{transform:scaleY(0.05)}}
+@keyframes catTailWag{0%,100%{transform:rotate(0deg)}33%{transform:rotate(12deg)}66%{transform:rotate(-8deg)}}
+@keyframes catTailWagFast{0%,100%{transform:rotate(0deg)}25%{transform:rotate(20deg)}75%{transform:rotate(-15deg)}}
+@keyframes catEyeShift{0%,80%,100%{transform:translateX(0)}85%,95%{transform:translateX(1px)}90%{transform:translateX(-1px)}}
+@keyframes catFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes catBounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}70%{transform:translateY(-2px)}}
+@keyframes catPaw{0%,100%{transform:rotate(0deg) translateY(0)}50%{transform:rotate(-15deg) translateY(-3px)}}
+@keyframes catYawn{0%,100%{transform:scaleX(1) scaleY(1)}50%{transform:scaleX(1.1) scaleY(1.2)}}
+@keyframes bubblePop{0%{opacity:0;transform:translateY(-50%) scale(.8)}100%{opacity:1;transform:translateY(-50%) scale(1)}}
+.cat-bubble.show{animation:bubblePop .25s var(--ease) both}
+
+#catEyeL,#catEyeR{animation:catBlink 4s ease-in-out infinite,catEyeShift 7s ease-in-out infinite}
+#catTail{transform-origin:30% 10%;animation:catTailWag 2.5s ease-in-out infinite}
+#catBody-group{animation:catFloat 3s ease-in-out infinite}
+
+/* pose classes */
+.cat-pose-sit #catBody-group{animation:catFloat 3s ease-in-out infinite}
+.cat-pose-peek #catBody-group{animation:catFloat 3.5s ease-in-out infinite}
+.cat-pose-lie #catBody-group{animation:catFloat 4s ease-in-out infinite}
+.cat-pose-side #catBody-group{animation:catFloat 3s ease-in-out infinite}
+
+/* action animations */
+.cat-action-play #catTail{animation:catTailWagFast 0.5s ease-in-out infinite}
+.cat-action-play #catBody-group{animation:catBounce 0.7s ease-in-out infinite}
+.cat-action-hunt #catBody-group{animation:none;transform:translateY(4px)}
+.cat-action-yawn #catMouth{animation:catYawn 1.5s ease-in-out}
+.cat-action-yawn #catTail{animation:catTailWag 3s ease-in-out infinite}
+.cat-action-roll #catBody-group{animation:catBounce 1.2s ease-in-out infinite}
+
+@media (max-width:380px){.cat-wrap{width:40px;height:40px}.cat-body{width:40px;height:40px}}
+
 </style>
 </head>
 <body>
@@ -444,8 +498,15 @@ button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus
 
 <!-- Nav -->
 <div class="header">
-  <div class="date-label" id="dateLabel"></div>
-  <div class="headline">Планчик</div>
+  <div class="header-text">
+    <div class="date-label" id="dateLabel"></div>
+    <div class="headline">Планчик</div>
+  </div>
+  <!-- Котик-маскот -->
+  <div class="cat-wrap" id="catWrap" title="Мяу!">
+    <div class="cat-bubble" id="catBubble"></div>
+    <div class="cat-body" id="catBody"></div>
+  </div>
 </div>
 <div class="nav-row">
   <div class="tabs">
@@ -1602,8 +1663,298 @@ document.getElementById('qaInput').addEventListener('keydown',(e)=>{
   if(e.key==='Enter') quickAddTask();
 });
 
-// ── Init ──
-function init(){
+
+// ══════════════════════════════════════════════════════
+// 🐱 CAT MASCOT
+// ══════════════════════════════════════════════════════
+(function(){
+
+const POSES = ['sit','peek','lie','side'];
+const PHRASES = [
+  'Ну что, начнём?','Сегодня без гонки.','Одна задача — уже прогресс.',
+  'Сделаем по чуть-чуть.','Не идеально, ну и ладно.','Мяу. Работаем!',
+  'Ты справишься 🐾','Тихо. Сосредоточься.','Мяу... это не так страшно.',
+];
+
+let currentPose = 'sit';
+let actionTimer = null;
+let phraseTimer = null;
+let bubbleTimer = null;
+let isAction = false;
+
+// ── SVG builders ──────────────────────────────────────
+
+function catSVG_sit(){
+  return `<svg id="catSVG" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
+  <g id="catBody-group">
+    <!-- tail -->
+    <g id="catTail" style="transform-origin:34px 42px">
+      <path d="M34 42 Q44 36 46 28 Q47 22 42 22" stroke="#D4893A" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+      <path d="M42 22 Q46 20 45 24" stroke="#D4893A" stroke-width="3" stroke-linecap="round" fill="none"/>
+    </g>
+    <!-- body -->
+    <ellipse cx="26" cy="36" rx="13" ry="11" fill="#E8A44A"/>
+    <ellipse cx="26" cy="36" rx="8" ry="7" fill="#F5C878" opacity=".55"/>
+    <!-- head -->
+    <circle cx="26" cy="22" r="12" fill="#E8A44A"/>
+    <!-- ears -->
+    <polygon points="16,13 13,5 21,11" fill="#E8A44A"/>
+    <polygon points="36,13 39,5 31,11" fill="#E8A44A"/>
+    <polygon points="16.5,12 14.5,7 20,11" fill="#F4A0A0" opacity=".7"/>
+    <polygon points="35.5,12 37.5,7 32,11" fill="#F4A0A0" opacity=".7"/>
+    <!-- face white -->
+    <ellipse cx="26" cy="24" rx="7" ry="6" fill="#FBE0A8" opacity=".5"/>
+    <!-- eyes -->
+    <g id="catEyeL" style="transform-origin:21px 21px">
+      <circle cx="21" cy="21" r="4" fill="#2A1A0A"/>
+      <circle cx="21" cy="21" r="3.2" fill="#4A3010"/>
+      <ellipse cx="21" cy="21" rx="1.6" ry="2.4" fill="#1A0A00"/>
+      <circle cx="22.2" cy="19.8" r="1" fill="white" opacity=".9"/>
+    </g>
+    <g id="catEyeR" style="transform-origin:31px 21px">
+      <circle cx="31" cy="21" r="4" fill="#2A1A0A"/>
+      <circle cx="31" cy="21" r="3.2" fill="#4A3010"/>
+      <ellipse cx="31" cy="21" rx="1.6" ry="2.4" fill="#1A0A00"/>
+      <circle cx="32.2" cy="19.8" r="1" fill="white" opacity=".9"/>
+    </g>
+    <!-- nose -->
+    <polygon id="catMouth" points="26,25.5 24.5,27 27.5,27" fill="#D4607A" opacity=".9"/>
+    <!-- mouth -->
+    <path d="M24.5 27 Q26 28.5 27.5 27" stroke="#C05060" stroke-width=".8" fill="none" stroke-linecap="round"/>
+    <!-- whiskers -->
+    <line x1="13" y1="24" x2="22" y2="25.5" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+    <line x1="13" y1="26.5" x2="22" y2="26.5" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+    <line x1="39" y1="24" x2="30" y2="25.5" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+    <line x1="39" y1="26.5" x2="30" y2="26.5" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+    <!-- paws -->
+    <ellipse cx="19" cy="46" rx="5" ry="3" fill="#E8A44A"/>
+    <ellipse cx="33" cy="46" rx="5" ry="3" fill="#E8A44A"/>
+  </g>
+</svg>`;
+}
+
+function catSVG_peek(){
+  return `<svg id="catSVG" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
+  <g id="catBody-group">
+    <!-- paws on ledge -->
+    <rect x="8" y="38" width="36" height="4" rx="2" fill="#2A3A55" opacity=".6"/>
+    <ellipse cx="18" cy="38" rx="5.5" ry="3.5" fill="#E8A44A"/>
+    <ellipse cx="34" cy="38" rx="5.5" ry="3.5" fill="#E8A44A"/>
+    <!-- head peeking up -->
+    <circle cx="26" cy="28" r="13" fill="#E8A44A"/>
+    <!-- ears barely visible -->
+    <polygon points="16,18 13,10 21,16" fill="#E8A44A"/>
+    <polygon points="36,18 39,10 31,16" fill="#E8A44A"/>
+    <polygon points="16.5,17 14.5,12 20,16" fill="#F4A0A0" opacity=".7"/>
+    <polygon points="35.5,17 37.5,12 32,16" fill="#F4A0A0" opacity=".7"/>
+    <!-- face -->
+    <ellipse cx="26" cy="30" rx="7.5" ry="6" fill="#FBE0A8" opacity=".5"/>
+    <!-- big eyes (wide, curious) -->
+    <g id="catEyeL" style="transform-origin:20px 26px">
+      <circle cx="20" cy="26" r="4.5" fill="#2A1A0A"/>
+      <circle cx="20" cy="26" r="3.6" fill="#4A3010"/>
+      <ellipse cx="20" cy="26" rx="1.8" ry="2.6" fill="#1A0A00"/>
+      <circle cx="21.4" cy="24.6" r="1.1" fill="white" opacity=".9"/>
+    </g>
+    <g id="catEyeR" style="transform-origin:32px 26px">
+      <circle cx="32" cy="26" r="4.5" fill="#2A1A0A"/>
+      <circle cx="32" cy="26" r="3.6" fill="#4A3010"/>
+      <ellipse cx="32" cy="26" rx="1.8" ry="2.6" fill="#1A0A00"/>
+      <circle cx="33.4" cy="24.6" r="1.1" fill="white" opacity=".9"/>
+    </g>
+    <!-- nose -->
+    <polygon id="catMouth" points="26,30 24.5,31.5 27.5,31.5" fill="#D4607A" opacity=".9"/>
+    <path d="M24.5 31.5 Q26 33 27.5 31.5" stroke="#C05060" stroke-width=".8" fill="none" stroke-linecap="round"/>
+    <!-- whiskers -->
+    <line x1="12" y1="29" x2="21" y2="30" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+    <line x1="12" y1="31.5" x2="21" y2="31.5" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+    <line x1="40" y1="29" x2="31" y2="30" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+    <line x1="40" y1="31.5" x2="31" y2="31.5" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+  </g>
+</svg>`;
+}
+
+function catSVG_lie(){
+  return `<svg id="catSVG" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
+  <g id="catBody-group">
+    <!-- tail hanging -->
+    <g id="catTail" style="transform-origin:42px 30px">
+      <path d="M42 30 Q48 34 48 40 Q48 46 44 46" stroke="#D4893A" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    </g>
+    <!-- body lying -->
+    <ellipse cx="24" cy="38" rx="16" ry="8" fill="#E8A44A"/>
+    <ellipse cx="24" cy="38" rx="10" ry="5" fill="#F5C878" opacity=".5"/>
+    <!-- front paws extended -->
+    <ellipse cx="10" cy="42" rx="6" ry="3" fill="#E8A44A"/>
+    <ellipse cx="20" cy="44" rx="5" ry="2.5" fill="#DFA040"/>
+    <!-- head resting -->
+    <circle cx="38" cy="30" r="11" fill="#E8A44A"/>
+    <!-- ears -->
+    <polygon points="30,22 27,15 35,20" fill="#E8A44A"/>
+    <polygon points="45,22 48,15 41,20" fill="#E8A44A"/>
+    <polygon points="30.5,21 28.5,16.5 34,20" fill="#F4A0A0" opacity=".7"/>
+    <polygon points="44.5,21 46.5,16.5 42,20" fill="#F4A0A0" opacity=".7"/>
+    <!-- face -->
+    <ellipse cx="38" cy="31" rx="6.5" ry="5.5" fill="#FBE0A8" opacity=".5"/>
+    <!-- eyes half-closed (relaxed) -->
+    <g id="catEyeL" style="transform-origin:34px 29px">
+      <circle cx="34" cy="29" r="3.5" fill="#2A1A0A"/>
+      <circle cx="34" cy="29" r="2.8" fill="#4A3010"/>
+      <ellipse cx="34" cy="29.5" rx="1.4" ry="1" fill="#1A0A00"/>
+      <path d="M31 28 Q34 26.5 37 28" stroke="#2A1A0A" stroke-width="1.5" fill="none"/>
+      <circle cx="35" cy="27.8" r=".8" fill="white" opacity=".8"/>
+    </g>
+    <g id="catEyeR" style="transform-origin:42px 29px">
+      <circle cx="42" cy="29" r="3.5" fill="#2A1A0A"/>
+      <circle cx="42" cy="29" r="2.8" fill="#4A3010"/>
+      <ellipse cx="42" cy="29.5" rx="1.4" ry="1" fill="#1A0A00"/>
+      <path d="M39 28 Q42 26.5 45 28" stroke="#2A1A0A" stroke-width="1.5" fill="none"/>
+      <circle cx="43" cy="27.8" r=".8" fill="white" opacity=".8"/>
+    </g>
+    <!-- nose -->
+    <polygon id="catMouth" points="38,32 36.5,33.5 39.5,33.5" fill="#D4607A" opacity=".9"/>
+    <path d="M36.5 33.5 Q38 35 39.5 33.5" stroke="#C05060" stroke-width=".8" fill="none" stroke-linecap="round"/>
+    <!-- whiskers -->
+    <line x1="27" y1="31.5" x2="35" y2="32.5" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+    <line x1="27" y1="33.5" x2="35" y2="33.5" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+    <line x1="49" y1="31.5" x2="41" y2="32.5" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+    <line x1="49" y1="33.5" x2="41" y2="33.5" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+  </g>
+</svg>`;
+}
+
+function catSVG_side(){
+  return `<svg id="catSVG" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
+  <g id="catBody-group">
+    <!-- tail -->
+    <g id="catTail" style="transform-origin:8px 32px">
+      <path d="M8 32 Q2 24 4 16 Q5 11 10 12" stroke="#D4893A" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    </g>
+    <!-- body side view -->
+    <ellipse cx="22" cy="36" rx="12" ry="10" fill="#E8A44A"/>
+    <ellipse cx="22" cy="36" rx="7" ry="6" fill="#F5C878" opacity=".5"/>
+    <!-- back paws -->
+    <ellipse cx="14" cy="45" rx="5" ry="2.5" fill="#DFA040"/>
+    <ellipse cx="24" cy="46" rx="5" ry="2.5" fill="#E8A44A"/>
+    <!-- head looking right (towards viewer) -->
+    <circle cx="36" cy="22" r="12" fill="#E8A44A"/>
+    <!-- ear -->
+    <polygon points="28,14 25,6 33,12" fill="#E8A44A"/>
+    <polygon points="28.5,13 26.5,8 32,12" fill="#F4A0A0" opacity=".7"/>
+    <polygon points="43,12 47,5 40,10" fill="#E8A44A"/>
+    <polygon points="42.5,12 45.5,7 40.5,10" fill="#F4A0A0" opacity=".7"/>
+    <!-- face -->
+    <ellipse cx="36" cy="23" rx="7" ry="6" fill="#FBE0A8" opacity=".5"/>
+    <!-- eyes -->
+    <g id="catEyeL" style="transform-origin:31px 21px">
+      <circle cx="31" cy="21" r="4" fill="#2A1A0A"/>
+      <circle cx="31" cy="21" r="3.2" fill="#4A3010"/>
+      <ellipse cx="31" cy="21" rx="1.6" ry="2.4" fill="#1A0A00"/>
+      <circle cx="32.2" cy="19.8" r="1" fill="white" opacity=".9"/>
+    </g>
+    <g id="catEyeR" style="transform-origin:41px 21px">
+      <circle cx="41" cy="21" r="3.5" fill="#2A1A0A"/>
+      <circle cx="41" cy="21" r="2.8" fill="#4A3010"/>
+      <ellipse cx="41" cy="21" rx="1.4" ry="2.1" fill="#1A0A00"/>
+      <circle cx="42" cy="19.8" r=".9" fill="white" opacity=".9"/>
+    </g>
+    <!-- nose -->
+    <polygon id="catMouth" points="36,25 34.5,26.5 37.5,26.5" fill="#D4607A" opacity=".9"/>
+    <path d="M34.5 26.5 Q36 28 37.5 26.5" stroke="#C05060" stroke-width=".8" fill="none" stroke-linecap="round"/>
+    <!-- whiskers -->
+    <line x1="24" y1="24" x2="33" y2="25" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+    <line x1="24" y1="26.5" x2="33" y2="26.5" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+    <line x1="48" y1="24" x2="40" y2="25" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+    <line x1="48" y1="26.5" x2="40" y2="26.5" stroke="#8A6040" stroke-width=".7" opacity=".7"/>
+    <!-- front paw waving -->
+    <g id="catPawWave" style="transform-origin:36px 34px;animation:catPaw 2s ease-in-out infinite">
+      <ellipse cx="36" cy="34" rx="5" ry="3.5" fill="#E8A44A"/>
+      <ellipse cx="36" cy="35.5" rx="4" ry="2.5" fill="#DFA040"/>
+    </g>
+  </g>
+</svg>`;
+}
+
+const SVG_MAP = {sit: catSVG_sit, peek: catSVG_peek, lie: catSVG_lie, side: catSVG_side};
+
+// ── Init cat ──────────────────────────────────────────
+function initCat(){
+  // Restore or pick random pose
+  const saved = localStorage.getItem('planner-cat-pose');
+  currentPose = (saved && POSES.includes(saved)) ? saved : POSES[Math.floor(Math.random()*POSES.length)];
+  renderCat(currentPose);
+  scheduleAction();
+  schedulePhrases();
+
+  // Click cat → random phrase
+  document.getElementById('catWrap').addEventListener('click', ()=>{
+    showPhrase(PHRASES[Math.floor(Math.random()*PHRASES.length)]);
+  });
+}
+
+function renderCat(pose){
+  const body = document.getElementById('catBody');
+  if(!body) return;
+  body.innerHTML = SVG_MAP[pose]();
+  body.className = 'cat-body cat-pose-'+pose;
+  currentPose = pose;
+  localStorage.setItem('planner-cat-pose', pose);
+}
+
+// ── Phrases ───────────────────────────────────────────
+function showPhrase(text){
+  const bubble = document.getElementById('catBubble');
+  if(!bubble) return;
+  clearTimeout(bubbleTimer);
+  bubble.textContent = text;
+  bubble.classList.add('show');
+  bubbleTimer = setTimeout(()=>bubble.classList.remove('show'), 3500);
+}
+
+function schedulePhrases(){
+  clearTimeout(phraseTimer);
+  const delay = (120 + Math.random()*180) * 1000; // 2–5 min
+  phraseTimer = setTimeout(()=>{
+    showPhrase(PHRASES[Math.floor(Math.random()*PHRASES.length)]);
+    schedulePhrases();
+  }, delay);
+}
+
+// ── Actions ───────────────────────────────────────────
+const ACTIONS = [
+  { name:'play',  duration:3000, label:'Играет с клубком 🧶' },
+  { name:'hunt',  duration:2500, label:'Охотится на курсор 🐭' },
+  { name:'roll',  duration:3500, label:'Валяется 🐾' },
+  { name:'yawn',  duration:2000, label:'Зевает 😸' },
+];
+
+function scheduleAction(){
+  clearTimeout(actionTimer);
+  const delay = (30 + Math.random()*90) * 1000;
+  actionTimer = setTimeout(()=>{
+    if(!isAction) doAction();
+    scheduleAction();
+  }, delay);
+}
+
+function doAction(){
+  isAction = true;
+  const action = ACTIONS[Math.floor(Math.random()*ACTIONS.length)];
+  const body = document.getElementById('catBody');
+  if(!body){ isAction=false; return; }
+  body.classList.add('cat-action-'+action.name);
+  setTimeout(()=>{
+    body.classList.remove('cat-action-'+action.name);
+    isAction = false;
+  }, action.duration);
+}
+
+// ── Start ─────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', ()=>{ setTimeout(initCat, 300); });
+if(document.readyState !== 'loading') setTimeout(initCat, 300);
+
+})();
+
   load();
   resetRecurring();
   setDate();
