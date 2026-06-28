@@ -79,6 +79,83 @@ body{
   display:inline-block;filter:drop-shadow(0 0 18px rgba(89,227,214,0.28));
 }
 
+/* ── Plant widget ── */
+.plant-widget{
+  display:inline-flex;align-items:flex-end;
+  position:relative;height:54px;width:44px;
+  flex-shrink:0;margin-left:10px;vertical-align:middle;
+}
+.plant-pot{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:34px;height:26px;flex-shrink:0;
+}
+.plant-sprout{
+  position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
+  width:36px;height:38px;overflow:visible;
+  will-change:transform;
+}
+#sprout-stem{
+  transform-origin:50% 100%;
+  will-change:transform;
+}
+#sprout-leftLeaf{
+  transform-origin:68% 78%;
+  will-change:transform;
+}
+#sprout-rightLeaf{
+  transform-origin:32% 78%;
+  will-change:transform;
+}
+
+/* Keyframes */
+@keyframes sprout-stem-anim{
+  0%   { transform:scaleY(1) rotate(0deg); }
+  18%  { transform:scaleY(1.07) rotate(0deg); }
+  38%  { transform:scaleY(1.07) rotate(0deg); }
+  55%  { transform:scaleY(1.06) rotate(-2.5deg); }
+  70%  { transform:scaleY(1.06) rotate(2deg); }
+  82%  { transform:scaleY(1.06) rotate(-1.2deg); }
+  92%  { transform:scaleY(1.02) rotate(0deg); }
+  100% { transform:scaleY(1) rotate(0deg); }
+}
+@keyframes sprout-leftLeaf-anim{
+  0%   { transform:rotate(0deg); }
+  22%  { transform:rotate(0deg); }
+  42%  { transform:rotate(-6deg); }
+  58%  { transform:rotate(-4deg) rotate(-4deg); }
+  72%  { transform:rotate(3deg); }
+  84%  { transform:rotate(-2deg); }
+  93%  { transform:rotate(1.5deg); }
+  100% { transform:rotate(0deg); }
+}
+@keyframes sprout-rightLeaf-anim{
+  0%   { transform:rotate(0deg); }
+  24%  { transform:rotate(0deg); }
+  44%  { transform:rotate(6deg); }
+  60%  { transform:rotate(4deg); }
+  73%  { transform:rotate(-3deg); }
+  85%  { transform:rotate(2deg); }
+  94%  { transform:rotate(-1.5deg); }
+  100% { transform:rotate(0deg); }
+}
+
+.sprout-animating #sprout-stem{
+  animation:sprout-stem-anim 3s cubic-bezier(.4,0,.2,1) forwards;
+}
+.sprout-animating #sprout-leftLeaf{
+  animation:sprout-leftLeaf-anim 3s cubic-bezier(.4,0,.2,1) 0.09s forwards;
+}
+.sprout-animating #sprout-rightLeaf{
+  animation:sprout-rightLeaf-anim 3s cubic-bezier(.4,0,.2,1) 0.11s forwards;
+}
+
+@media(max-width:360px){
+  .plant-widget{height:46px;width:38px;margin-left:7px;}
+  .plant-pot{width:29px;height:22px;}
+  .plant-sprout{width:30px;height:32px;bottom:15px;}
+}
+/* ── End plant widget ── */
+
 /* Nav */
 .nav-row{display:flex;gap:6px;margin-bottom:16px;align-items:center}
 .tabs{display:flex;gap:4px;flex:1;background:var(--card);border-radius:var(--r-md);padding:4px;border:1px solid var(--border)}
@@ -445,7 +522,89 @@ button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus
 <!-- Nav -->
 <div class="header">
   <div class="date-label" id="dateLabel"></div>
-  <div class="headline">Планчик</div>
+  <div style="display:flex;align-items:flex-end;gap:0">
+    <div class="headline">Планчик</div>
+    <!-- ── Plant widget ── -->
+    <div class="plant-widget" id="plantWidget">
+      <!-- Static pot SVG -->
+      <svg class="plant-pot" viewBox="0 0 34 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Pot body -->
+        <ellipse cx="17" cy="24.5" rx="13" ry="1.5" fill="rgba(0,0,0,0.18)"/>
+        <path d="M4.5 10 Q3.5 10 3 11 L5.5 23 Q6 24.5 8 24.5 L26 24.5 Q28 24.5 28.5 23 L31 11 Q30.5 10 29.5 10 Z"
+          fill="url(#potGrad)" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>
+        <!-- Pot rim -->
+        <rect x="3" y="7.5" width="28" height="4" rx="2"
+          fill="url(#rimGrad)" stroke="rgba(255,255,255,0.10)" stroke-width="0.5"/>
+        <!-- Dirt fill in rim -->
+        <ellipse cx="17" cy="9.5" rx="11" ry="2.2" fill="url(#dirtGrad)"/>
+        <!-- Dirt surface texture (subtle) -->
+        <ellipse cx="13" cy="9.2" rx="2" ry="0.6" fill="rgba(0,0,0,0.10)" transform="rotate(-10 13 9.2)"/>
+        <ellipse cx="21" cy="9.6" rx="1.5" ry="0.5" fill="rgba(0,0,0,0.08)" transform="rotate(8 21 9.6)"/>
+        <!-- Highlight on pot -->
+        <path d="M8 13 Q9 11.5 11 11" stroke="rgba(255,255,255,0.12)" stroke-width="1" stroke-linecap="round" fill="none"/>
+        <defs>
+          <linearGradient id="potGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#4a4540"/>
+            <stop offset="45%" stop-color="#3a3530"/>
+            <stop offset="100%" stop-color="#252220"/>
+          </linearGradient>
+          <linearGradient id="rimGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5a5550"/>
+            <stop offset="100%" stop-color="#38342f"/>
+          </linearGradient>
+          <radialGradient id="dirtGrad" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#5c3d1e"/>
+            <stop offset="100%" stop-color="#3a2410"/>
+          </radialGradient>
+        </defs>
+      </svg>
+      <!-- Animated sprout SVG -->
+      <svg class="plant-sprout" id="plantSprout" viewBox="0 0 36 38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="stemGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#5a8a2a"/>
+            <stop offset="50%" stop-color="#7ab83a"/>
+            <stop offset="100%" stop-color="#5a8a2a"/>
+          </linearGradient>
+          <linearGradient id="leftLeafGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#9cd44a"/>
+            <stop offset="50%" stop-color="#7ab83a"/>
+            <stop offset="100%" stop-color="#4d8020"/>
+          </linearGradient>
+          <linearGradient id="rightLeafGrad" x1="1" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#9cd44a"/>
+            <stop offset="50%" stop-color="#7ab83a"/>
+            <stop offset="100%" stop-color="#4d8020"/>
+          </linearGradient>
+          <filter id="leafGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="0.8" result="blur"/>
+            <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.4  0 0 0 0 0.7  0 0 0 0 0.1  0 0 0 0.3 0" result="glow"/>
+            <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Stem -->
+        <g id="sprout-stem">
+          <path d="M18 38 Q16 30 17 22 Q17.5 18 18 16"
+            stroke="url(#stemGrad)" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+        </g>
+        <!-- Left leaf (grows left-upward from stem junction) -->
+        <g id="sprout-leftLeaf">
+          <path d="M17 22 Q8 18 5 10 Q9 14 17 18 Q14 10 10 6 Q18 10 19 20 Z"
+            fill="url(#leftLeafGrad)" filter="url(#leafGlow)"/>
+          <!-- Leaf vein -->
+          <path d="M17 22 Q11 16 7 9" stroke="rgba(255,255,255,0.18)" stroke-width="0.6" stroke-linecap="round" fill="none"/>
+        </g>
+        <!-- Right leaf (grows right-upward from stem junction) -->
+        <g id="sprout-rightLeaf">
+          <path d="M19 20 Q28 14 31 6 Q27 10 23 16 Q28 10 26 4 Q18 8 17 18 Z"
+            fill="url(#rightLeafGrad)" filter="url(#leafGlow)"/>
+          <!-- Leaf vein -->
+          <path d="M19 20 Q25 14 29 7" stroke="rgba(255,255,255,0.18)" stroke-width="0.6" stroke-linecap="round" fill="none"/>
+        </g>
+      </svg>
+    </div>
+    <!-- ── End plant widget ── -->
+  </div>
 </div>
 <div class="nav-row">
   <div class="tabs">
@@ -1154,7 +1313,7 @@ function toggleTask(id,sec){
     t.completedAt=null;
   }
   save();render();
-  if(t.done) maybeShowMotivation();
+  if(t.done){ maybeShowMotivation(); animateSprout(); }
 }
 function deleteTask(id,sec){
   const idx=state.tasks[sec].findIndex(x=>x.id===id);
@@ -1377,6 +1536,7 @@ function quickAddTask(){
   document.getElementById('qaExpandBtn').classList.remove('open');
   render();
   vibrate(8);
+  animateSprout();
 }
 
 // ── Drag & drop reorder ──
@@ -1601,6 +1761,25 @@ document.addEventListener('keydown',(e)=>{
 document.getElementById('qaInput').addEventListener('keydown',(e)=>{
   if(e.key==='Enter') quickAddTask();
 });
+
+// ── Plant animation ──
+(function(){
+  let _sproutRunning = false;
+
+  window.animateSprout = function() {
+    if (_sproutRunning) return;
+    const widget = document.getElementById('plantWidget');
+    if (!widget) return;
+    _sproutRunning = true;
+    widget.classList.add('sprout-animating');
+    // Duration matches longest animation (stem 3s + leaf offset 0.11s ≈ 3110ms)
+    setTimeout(function() {
+      widget.classList.remove('sprout-animating');
+      _sproutRunning = false;
+    }, 3200);
+  };
+})();
+// ── End plant animation ──
 
 // ── Init ──
 function init(){
