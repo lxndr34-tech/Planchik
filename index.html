@@ -94,8 +94,8 @@ body{
 .tab:not(.active) .badge{background:var(--muted);color:var(--text2)}
 
 .settings-btn{
-  width:38px;height:38px;border-radius:var(--r-sm);border:1px solid var(--border);
-  background:var(--card);color:var(--text3);cursor:pointer;font-size:16px;
+  width:44px;height:44px;border-radius:var(--r-sm);border:1px solid var(--border);
+  background:var(--card);color:var(--text3);cursor:pointer;font-size:18px;
   display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--ease);flex-shrink:0;
 }
 .settings-btn:hover,.settings-btn.active{border-color:var(--mint);color:var(--mint);background:var(--mint-dim)}
@@ -118,15 +118,15 @@ body{
 
 /* Tasks */
 .task{
-  display:flex;align-items:center;gap:10px;
-  padding:12px 12px;border-radius:var(--r-sm);
+  display:flex;align-items:stretch;gap:0;
+  padding:0;border-radius:var(--r-sm);
   background:var(--card2);border:1px solid var(--border);
   margin-bottom:7px;transition:border-color 0.2s var(--ease),transform 0.2s var(--ease),box-shadow 0.2s var(--ease);
 }
 .task:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,0.14)}
 .task.completed{opacity:0.42}
 .check-btn{
-  width:21px;height:21px;border-radius:50%;border:1.5px solid var(--border2);
+  width:26px;height:26px;min-width:26px;border-radius:50%;border:1.5px solid var(--border2);
   background:transparent;cursor:pointer;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;padding:0;transition:all 0.2s var(--ease);
 }
@@ -134,16 +134,16 @@ body{
 .check-btn:active{transform:scale(0.88)}
 .check-btn.done{background:var(--mint);border-color:var(--mint);box-shadow:0 0 8px var(--mint-glow)}
 .check-btn svg{display:none}.check-btn.done svg{display:block}
-.priority-badge{font-size:10px;font-weight:600;border-radius:6px;padding:2px 7px;flex-shrink:0;letter-spacing:0.2px}
+.priority-badge{font-size:10px;font-weight:600;border-radius:6px;padding:2px 7px;flex-shrink:0;letter-spacing:0.2px;white-space:nowrap}
 .p-high{color:var(--terra);background:var(--terra-dim)}
 .p-medium{color:var(--mint);background:var(--mint-dim)}
 .p-low{color:var(--muted);background:var(--muted-dim)}
-.task-text{flex:1;font-size:15px;color:var(--text);cursor:text;line-height:1.5;border:none;background:transparent;font-family:inherit;outline:none}
+.task-text{flex:1;font-size:14px;color:var(--text);cursor:text;line-height:1.45;border:none;background:transparent;font-family:inherit;outline:none;word-break:break-word;min-width:0}
 .task-text.done{text-decoration:line-through;color:var(--text3)}
-.task-text-input{flex:1;font-size:15px;color:var(--text);line-height:1.5;border:none;border-bottom:1.5px solid var(--mint);background:transparent;font-family:inherit;outline:none;padding:2px 0}
-.task-remind{font-size:10px;color:var(--text3);flex-shrink:0;display:flex;align-items:center;gap:2px}
+.task-text-input{flex:1;font-size:14px;color:var(--text);line-height:1.45;border:none;border-bottom:1.5px solid var(--mint);background:transparent;font-family:inherit;outline:none;padding:2px 0;min-width:0}
+.task-remind{font-size:10px;color:var(--text3);flex-shrink:0;display:flex;align-items:center;gap:2px;white-space:nowrap}
 .task-remind.set{color:var(--mint)}
-.del-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:0 2px;line-height:1;flex-shrink:0;transition:color 0.15s var(--ease),transform 0.15s var(--ease)}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:20px;padding:0;line-height:1;flex-shrink:0;transition:color 0.15s var(--ease),transform 0.15s var(--ease);min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px}
 .del-btn:hover{color:var(--terra);transform:scale(1.12)}
 .section-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:0.8px;text-transform:uppercase;margin:16px 0 9px}
 .empty{text-align:center;color:var(--text3);font-size:15px;padding:30px 0 16px}
@@ -304,14 +304,14 @@ button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus
 .chip.sel{color:var(--mint);background:var(--mint-dim);border-color:var(--mint)}
 
 /* ---- Calendar popup ---- */
-.cal-popup{position:relative}
+.cal-popup{position:static}
 .cal-trigger{font-size:12px;color:var(--text2);background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:5px 10px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:border-color .15s var(--ease)}
 .cal-trigger:hover{border-color:var(--mint)}
 .cal-trigger.set{color:var(--mint);border-color:var(--mint)}
 .cal-panel{
-  position:absolute;top:calc(100% + 6px);left:0;z-index:50;width:248px;
-  background:var(--card2);border:1px solid var(--border2);border-radius:var(--r-md);padding:12px;
-  box-shadow:0 16px 36px rgba(0,0,0,.5);animation:popIn .16s var(--ease) both;
+  position:fixed;z-index:9999;width:280px;
+  background:var(--card2);border:1px solid var(--border2);border-radius:var(--r-md);padding:14px;
+  box-shadow:0 24px 48px rgba(0,0,0,.7),0 0 0 1px rgba(89,227,214,0.08);animation:popIn .16s var(--ease) both;
 }
 .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .cal-head button{background:none;border:none;color:var(--text2);cursor:pointer;font-size:14px;padding:4px 8px;border-radius:6px}
@@ -358,41 +358,52 @@ button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus
 .task-swipe-bg{position:absolute;inset:0;display:flex;align-items:center;border-radius:var(--r-sm);font-size:13px;font-weight:600;color:#fff;opacity:0;z-index:0;padding:0 16px}
 .task-swipe-bg.left{justify-content:flex-end;background:linear-gradient(90deg,transparent,var(--terra) 60%)}
 .task-swipe-bg.right{justify-content:flex-start;background:linear-gradient(270deg,transparent,var(--mint2) 60%);color:#0D1117}
-.task-content{position:relative;z-index:1;display:flex;align-items:center;gap:10px;width:100%;background:var(--card2);border-radius:var(--r-sm)}
+.task-content{position:relative;z-index:1;display:flex;align-items:center;gap:10px;width:100%;background:var(--card2);border-radius:var(--r-sm);padding:11px 10px;min-width:0}
 .task.pinned .task-content{box-shadow:inset 0 0 0 1px rgba(89,227,214,.3)}
 .drag-handle{cursor:grab;color:var(--text3);font-size:13px;line-height:1;padding:4px 1px;flex-shrink:0;touch-action:none;user-select:none;transition:color .15s var(--ease)}
 .drag-handle:hover{color:var(--text2)}
 .drag-handle:active{cursor:grabbing}
 .pin-ic{font-size:11px;flex-shrink:0;opacity:.85}
-.task-meta-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:3px}
+.task-meta-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:2px;min-width:0}
 .task-due{font-size:10.5px;color:var(--text3);display:flex;align-items:center;gap:2px}
 .task-due.overdue{color:var(--terra)}
 .task-due.today-due{color:var(--mint)}
 .task-repeat-ic{font-size:10px;color:var(--text3)}
 .task-sub-progress{font-size:10px;color:var(--text3);background:var(--card);border-radius:6px;padding:1px 6px;flex-shrink:0}
-.task-text-wrap{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.task-text-wrap{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;overflow:hidden}
 .check-btn{position:relative}
 .check-btn.done{animation:ringPulse .3s var(--ease)}
 .task .del-btn,.task .more-btn{opacity:0;transition:opacity .15s var(--ease)}
 .task:hover .del-btn,.task:hover .more-btn,.task:focus-within .del-btn,.task:focus-within .more-btn{opacity:1}
 @media (hover:none){.task .del-btn,.task .more-btn{opacity:.65}}
-.more-btn{background:none;border:none;color:var(--text3);font-size:16px;cursor:pointer;padding:0 3px;line-height:1;flex-shrink:0}
-.more-btn:hover{color:var(--mint)}
+.more-btn{background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;padding:0;min-width:32px;min-height:32px;line-height:1;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:6px;transition:color .15s var(--ease),background .15s var(--ease)}
+.more-btn:hover{color:var(--mint);background:rgba(89,227,214,0.1)}
 
 /* ---- Subtasks ---- */
-.subtasks{margin:6px 0 2px 31px;display:flex;flex-direction:column;gap:5px}
-.subtask-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2)}
-.sub-check{width:15px;height:15px;border-radius:5px;border:1.5px solid var(--border2);background:transparent;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:0}
+.subtasks{margin:0;padding:8px 10px 10px 44px;display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--border)}
+.subtask-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);min-height:32px;border-radius:6px;padding:3px 6px;transition:background .12s var(--ease)}
+.subtask-row:hover{background:rgba(255,255,255,0.04)}
+.sub-check{width:18px;height:18px;min-width:18px;border-radius:5px;border:1.5px solid var(--border2);background:transparent;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:0;transition:all .18s var(--ease)}
+.sub-check:hover{border-color:var(--mint);box-shadow:0 0 5px var(--mint-glow)}
 .sub-check.done{background:var(--mint);border-color:var(--mint)}
-.sub-check svg{display:none;width:8px;height:6px}
+.sub-check svg{display:none;width:9px;height:7px}
 .sub-check.done svg{display:block}
-.subtask-text{flex:1}
+.subtask-text{flex:1;word-break:break-word;line-height:1.4}
 .subtask-text.done{text-decoration:line-through;color:var(--text3)}
-.subtask-add-row{display:flex;gap:6px;margin:6px 0 2px 31px}
-.subtask-add-row input{flex:1;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:12px;padding:6px 9px;font-family:inherit;outline:none}
+.sub-del-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:15px;padding:0 3px;line-height:1;flex-shrink:0;opacity:0;transition:opacity .15s var(--ease),color .15s var(--ease)}
+.subtask-row:hover .sub-del-btn{opacity:1}
+.sub-del-btn:hover{color:var(--terra)}
+.sub-edit-text{flex:1;border:none;border-bottom:1px solid var(--mint);background:transparent;color:var(--text);font-size:13px;font-family:inherit;outline:none;padding:2px 0}
+.subtask-add-row{display:flex;gap:6px;align-items:center;margin:6px 10px 2px 44px}
+.subtask-add-row input{flex:1;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:12px;padding:6px 10px;font-family:inherit;outline:none;transition:border-color .2s var(--ease)}
 .subtask-add-row input:focus{border-color:var(--mint)}
-.subtask-toggle{font-size:11px;color:var(--text3);cursor:pointer;margin-left:31px;display:inline-flex;align-items:center;gap:3px;transition:color .15s var(--ease)}
-.subtask-toggle:hover{color:var(--mint)}
+.subtask-add-row .sub-add-confirm{background:var(--mint);border:none;border-radius:6px;color:#0D1117;font-size:11px;font-weight:700;padding:5px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;transition:opacity .15s}
+.subtask-add-row .sub-add-confirm:hover{opacity:.85}
+.subtask-toggle{font-size:11px;color:var(--text3);cursor:pointer;padding:2px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;transition:color .15s var(--ease),background .15s var(--ease);flex-shrink:0;min-width:44px;min-height:44px;justify-content:center}
+.subtask-toggle:hover{color:var(--mint);background:rgba(89,227,214,0.08)}
+.subtask-toggle.open{color:var(--mint)}
+.subtask-toggle svg{transition:transform .2s var(--ease);flex-shrink:0}
+.subtask-toggle.open svg{transform:rotate(90deg)}
 
 /* ---- Context menu ---- */
 .ctx-menu{position:fixed;z-index:300;background:var(--card2);border:1px solid var(--border2);border-radius:var(--r-md);box-shadow:0 16px 36px rgba(0,0,0,.55);padding:6px;min-width:188px;animation:popIn .14s var(--ease) both}
@@ -445,15 +456,16 @@ button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus
 .char-count{font-size:10.5px;color:var(--text3)}
 
 /* ---- Misc icon buttons ---- */
-.icon-btn{width:36px;height:36px;border-radius:var(--r-sm);border:1px solid var(--border);background:var(--card);color:var(--text3);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.icon-btn:hover{border-color:var(--mint);color:var(--mint)}
+.icon-btn{width:44px;height:44px;border-radius:var(--r-sm);border:1px solid var(--border);background:var(--card);color:var(--text3);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s var(--ease)}
+.icon-btn:hover{border-color:var(--mint);color:var(--mint);background:var(--mint-dim)}
 .icon-btn.active{border-color:var(--mint);color:var(--mint);background:var(--mint-dim)}
+.icon-btn:active{transform:scale(.9)}
 
 .kbd-hint{font-size:10.5px;color:var(--text3);border:1px solid var(--border2);border-radius:5px;padding:1px 5px;font-family:ui-monospace,monospace}
 
 @media (max-width:380px){
   .stats-body{grid-template-columns:repeat(2,1fr)}
-  .cal-panel{width:90vw;left:50%;transform:translateX(-50%)}
+  .cal-panel{width:calc(100vw - 16px)}
 }
 
 </style>
@@ -499,23 +511,12 @@ button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus
   <div class="btn-row">
     <button class="btn-ghost" onclick="exportData()">⬇️ Экспорт (JSON)</button>
     <button class="btn-ghost" onclick="document.getElementById('importFile').click()">⬆️ Импорт</button>
-    <button class="btn-ghost" onclick="openArchive()">🗄️ Архив выполненных</button>
     <input type="file" id="importFile" accept="application/json" style="display:none" onchange="importData(this.files[0])">
   </div>
 
   <div class="settings-section-title">⌨️ Горячие клавиши</div>
   <div style="font-size:12px;color:var(--text2);line-height:2">
     <span class="kbd-hint">N</span> новая задача &nbsp; <span class="kbd-hint">/</span> поиск &nbsp; <span class="kbd-hint">Esc</span> закрыть
-  </div>
-</div>
-
-<!-- Archive panel -->
-<div class="settings-panel" id="archivePanel" style="display:none">
-  <div class="settings-title">🗄️ Архив выполненных задач</div>
-  <div class="settings-desc">Сюда попадают задачи после нажатия «Очистить выполненные». Можно восстановить или удалить навсегда.</div>
-  <div id="archiveList"></div>
-  <div class="settings-actions" style="margin-top:10px">
-    <button class="btn-ghost" onclick="closeArchive()">Закрыть</button>
   </div>
 </div>
 
@@ -539,21 +540,6 @@ button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus
   <span style="font-size:13px">🔍</span>
   <input type="text" id="searchInput" placeholder="Поиск по всем задачам..." oninput="onSearchInput()">
   <button class="search-clear" id="searchClearBtn" onclick="clearSearch()">×</button>
-</div>
-
-<!-- Stats -->
-<div class="stats-card" id="statsCard">
-  <div class="stats-head" onclick="toggleStats()">
-    <span class="stats-title">📊 Статистика</span>
-    <span class="stats-toggle" id="statsToggleIc">▾</span>
-  </div>
-  <div class="stats-body" id="statsBody">
-    <div class="stat-box"><div class="stat-num" id="statToday">0</div><div class="stat-lbl">выполнено сегодня</div></div>
-    <div class="stat-box"><div class="stat-num" id="statWeek">0</div><div class="stat-lbl">выполнено за неделю</div></div>
-    <div class="stat-box streak"><div class="stat-num" id="statStreak">0</div><div class="stat-lbl">🔥 серия дней</div></div>
-    <div class="stat-box"><div class="stat-num" id="statPercent">0%</div><div class="stat-lbl">процент выполнения</div></div>
-    <div class="stat-box" style="grid-column:1/-1"><div class="stat-num" id="statTotal">0</div><div class="stat-lbl">всего задач во всех разделах</div></div>
-  </div>
 </div>
 
 <!-- Main card -->
@@ -620,7 +606,7 @@ button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus
   <div id="taskList"></div>
 
   <div id="clearDoneRow" style="display:none;margin-top:6px">
-    <button class="add-btn" onclick="clearCompleted()" style="text-align:center;border-style:solid">🗑️ Очистить выполненные в архив</button>
+    <button class="add-btn" onclick="clearCompleted()" style="text-align:center;border-style:solid">🗑️ Удалить выполненные</button>
   </div>
 
   <div id="notesArea" class="notes-area">
@@ -747,7 +733,6 @@ let activeFilter = 'all';
 let searchQuery = '';
 let saveTimer = null;
 let deferredPrompt = null;
-let statsCollapsed = false;
 
 // quick-add transient state
 let qa = {priority:'medium',color:'',repeat:'',dueDate:null,remindAt:null};
@@ -884,7 +869,6 @@ function toggleSettings() {
   const p = document.getElementById('settingsPanel');
   const btn = document.getElementById('settingsBtn');
   const open = p.style.display==='none';
-  document.getElementById('archivePanel').style.display='none';
   p.style.display = open ? 'block' : 'none';
   btn.classList.toggle('active', open);
   if (open) {
@@ -940,6 +924,74 @@ function checkReminders() {
   });
 }
 
+// ── Daily midnight TG auto-send ──
+// Sends "today" notes to Telegram at 00:00 Moscow time (UTC+3)
+// and clears the note after successful send. Fires only once per day.
+function getMoscowMidnightMs() {
+  // Moscow = UTC+3, midnight = 21:00 UTC previous day
+  const now = new Date();
+  // Calculate current Moscow date
+  const moscowOffset = 3 * 60; // minutes
+  const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+  const moscowMs = utcMs + moscowOffset * 60000;
+  const moscowNow = new Date(moscowMs);
+  // Next midnight in Moscow
+  const moscowMidnight = new Date(moscowMs);
+  moscowMidnight.setHours(0,0,0,0);
+  moscowMidnight.setDate(moscowMidnight.getDate()+1);
+  // Convert back to local ms
+  return moscowMidnight.getTime() - moscowOffset * 60000 - now.getTimezoneOffset() * 60000;
+}
+
+function scheduleMidnightSend() {
+  const nowMs = Date.now();
+  const midnightMs = getMoscowMidnightMs();
+  const delay = midnightMs - nowMs;
+  setTimeout(async () => {
+    await doMidnightSend();
+    scheduleMidnightSend(); // reschedule for next day
+  }, delay);
+}
+
+async function doMidnightSend() {
+  if (!tgCfg.token || !tgCfg.chatId) return;
+  // Check if already sent today (Moscow date)
+  const moscowOffset = 3 * 60;
+  const utcMs = Date.now() + new Date().getTimezoneOffset() * 60000;
+  const moscowMs = utcMs + moscowOffset * 60000;
+  const moscowDateStr = new Date(moscowMs).toISOString().slice(0,10);
+  const lastSentKey = 'planner-midnight-sent';
+  const lastSent = localStorage.getItem(lastSentKey);
+  if (lastSent === moscowDateStr) return;
+  // Compose message
+  const note = state.note || '';
+  const todayTasks = state.tasks.today || [];
+  if (!note && !todayTasks.length) {
+    localStorage.setItem(lastSentKey, moscowDateStr);
+    return;
+  }
+  let msg = `📝 <b>Заметки на день (${moscowDateStr})</b>\n\n`;
+  if (note) {
+    msg += `<i>${note}</i>\n\n`;
+  }
+  if (todayTasks.length) {
+    msg += `<b>Задачи «Сегодня»:</b>\n`;
+    todayTasks.forEach(t => {
+      msg += `${t.done ? '✅' : '☐'} ${t.text}\n`;
+    });
+  }
+  const ok = await sendTg(msg.trim());
+  if (ok) {
+    localStorage.setItem(lastSentKey, moscowDateStr);
+    // Clear note and today's tasks
+    state.note = '';
+    state.tasks.today = [];
+    save();
+    render();
+    showToast('📬 Заметки дня отправлены в Telegram');
+  }
+}
+
 // ── Section / filter / search ──
 function switchSection(s) {
   activeSection=s;
@@ -987,11 +1039,6 @@ function clearSearch(skipUI){
 }
 
 // ── Stats ──
-function toggleStats(){
-  statsCollapsed=!statsCollapsed;
-  document.getElementById('statsBody').classList.toggle('collapsed',statsCollapsed);
-  document.getElementById('statsToggleIc').textContent=statsCollapsed?'▸':'▾';
-}
 function computeStats(){
   const today=todayStr();
   const byDate=state.stats.byDate||{};
@@ -1008,12 +1055,7 @@ function computeStats(){
   return {statToday,statWeek,streak,percent,total};
 }
 function renderStats(){
-  const s=computeStats();
-  document.getElementById('statToday').textContent=s.statToday;
-  document.getElementById('statWeek').textContent=s.statWeek;
-  document.getElementById('statStreak').textContent=s.streak;
-  document.getElementById('statPercent').textContent=s.percent+'%';
-  document.getElementById('statTotal').textContent=s.total;
+  // Stats block removed from UI, only compute internally for motivation
 }
 function recordCompletion(){
   const today=todayStr();
@@ -1136,8 +1178,17 @@ function taskHTML(t,sec,idx,inDoneGroup,showSectionTag) {
     <div class="subtask-row" data-sub-id="${s.id}">
       <button class="sub-check${s.done?' done':''}"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4L4 7L9 1" stroke="#0D1117" stroke-width="2" stroke-linecap="round"/></svg></button>
       <span class="subtask-text${s.done?' done':''}">${escHtml(s.text)}</span>
-    </div>`).join('')}</div>` : '';
-  const subToggle = subTotal ? `<span class="subtask-toggle" data-toggle-sub="1">${t.subtasksOpen?'▾':'▸'} подзадачи</span>` : '';
+      <button class="sub-del-btn" data-sub-del="${s.id}" title="Удалить">×</button>
+    </div>`).join('')}
+    <div class="subtask-add-row" id="subAddRow-${t.id}">
+      <input type="text" placeholder="Добавить подзадачу…" id="subAddInp-${t.id}" autocomplete="off">
+      <button class="sub-add-confirm" data-sub-add="1">+</button>
+    </div>
+  </div>` : (t.subtasksOpen && !subTotal ? `<div class="subtasks"><div class="subtask-add-row" id="subAddRow-${t.id}">
+    <input type="text" placeholder="Добавить подзадачу…" id="subAddInp-${t.id}" autocomplete="off">
+    <button class="sub-add-confirm" data-sub-add="1">+</button>
+  </div></div>` : '');
+  const subToggle = `<button class="subtask-toggle${t.subtasksOpen?' open':''}" data-toggle-sub="1" title="${t.subtasksOpen?'Свернуть':'Развернуть'} подзадачи"><svg width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>${subTotal?` ${subDone}/${subTotal}`:''}</button>`;
   return `<div class="task${t.done?' completed':''}${t.pinned?' pinned':''}" data-id="${t.id}" data-sec="${sec}">
     <div class="task-swipe-bg left">🗑️ Удалить</div>
     <div class="task-swipe-bg right">📦 Потом / завтра</div>
@@ -1216,72 +1267,41 @@ function toggleSubtask(taskId,sec,subId){
   const s=(t.subtasks||[]).find(x=>x.id===subId);if(!s)return;
   s.done=!s.done;save();render();
 }
+function deleteSubtask(taskId,sec,subId){
+  const t=state.tasks[sec].find(x=>x.id===taskId);if(!t)return;
+  t.subtasks=(t.subtasks||[]).filter(s=>s.id!==subId);
+  save();render();
+}
 function addSubtaskPrompt(taskId,sec){
   const t=state.tasks[sec].find(x=>x.id===taskId);if(!t)return;
-  const text=prompt('Подзадачи (можно несколько строк, через Enter):');
-  if(!text)return;
   if(!t.subtasks)t.subtasks=[];
-  text.split('\n').map(s=>s.trim()).filter(Boolean).forEach(line=>{
-    t.subtasks.push({id:uid(),text:line,done:false});
-  });
   t.subtasksOpen=true;
   save();render();
+  // Focus the add input after render
+  setTimeout(()=>{
+    const inp=document.getElementById('subAddInp-'+taskId);
+    if(inp)inp.focus();
+  },50);
 }
 
 // ── Pin / color / archive single ──
 function setPinned(id,sec,val){const t=state.tasks[sec].find(x=>x.id===id);if(!t)return;t.pinned=val;save();render();}
 function setColor(id,sec,color){const t=state.tasks[sec].find(x=>x.id===id);if(!t)return;t.color=color||null;save();render();}
 function archiveOne(id,sec){
-  const idx=state.tasks[sec].findIndex(x=>x.id===id);if(idx<0)return;
-  const [t]=state.tasks[sec].splice(idx,1);
-  state.archive.unshift({id:t.id,text:t.text,priority:t.priority,section:sec,completedAt:t.completedAt||new Date().toISOString(),color:t.color});
-  save();render();
-  showToast('Задача отправлена в архив');
+  deleteTask(id,sec);
 }
 function clearCompleted(){
   const list=state.tasks[activeSection];
   const done=list.filter(t=>t.done);
   if(!done.length)return;
-  done.forEach(t=>{
-    state.archive.unshift({id:t.id,text:t.text,priority:t.priority,section:activeSection,completedAt:t.completedAt||new Date().toISOString(),color:t.color});
-  });
   state.tasks[activeSection]=list.filter(t=>!t.done);
   save();render();
-  showToast(`В архив перенесено: ${done.length}`);
+  showToast(`Удалено выполненных: ${done.length}`);
 }
 
-// ── Archive panel ──
-function openArchive(){
-  document.getElementById('settingsPanel').style.display='none';
-  document.getElementById('archivePanel').style.display='block';
-  renderArchiveList();
-}
-function closeArchive(){document.getElementById('archivePanel').style.display='none';}
-function renderArchiveList(){
-  const el=document.getElementById('archiveList');
-  if(!state.archive.length){el.innerHTML='<div class="empty-state"><span class="empty-emoji">🗄️</span><div class="empty-text">Архив пуст.</div></div>';return;}
-  el.innerHTML=state.archive.map(a=>`
-    <div class="archive-item" data-aid="${a.id}">
-      <span class="archive-text">${escHtml(a.text)}</span>
-      <span class="archive-date">${new Date(a.completedAt).toLocaleDateString('ru-RU')}</span>
-      <button class="archive-restore" data-act="restore">Вернуть</button>
-      <button class="del-btn" data-act="del" title="Удалить навсегда">×</button>
-    </div>`).join('');
-  el.querySelectorAll('.archive-item').forEach(row=>{
-    const aid=row.dataset.aid;
-    row.querySelector('[data-act="restore"]').onclick=()=>restoreArchived(aid);
-    row.querySelector('[data-act="del"]').onclick=()=>{
-      state.archive=state.archive.filter(a=>a.id!==aid);save();renderArchiveList();
-    };
-  });
-}
-function restoreArchived(aid){
-  const a=state.archive.find(x=>x.id===aid);if(!a)return;
-  state.tasks[a.section].unshift({id:uid(),text:a.text,priority:a.priority,done:false,remindAt:null,reminded:false,repeat:null,dueDate:null,subtasks:[],color:a.color||null,pinned:false,completedAt:null,subtasksOpen:false});
-  state.archive=state.archive.filter(x=>x.id!==aid);
-  save();renderArchiveList();render();
-  showToast('Задача восстановлена');
-}
+// Archive removed from UI
+
+
 
 // ── Export / Import ──
 function exportData(){
@@ -1326,10 +1346,19 @@ function toggleCalendar(forId){
   const base = qa.dueDate? parseDate(qa.dueDate) : new Date();
   calState={openFor:forId,year:base.getFullYear(),month:base.getMonth()};
   const trigger=document.getElementById(forId+'CalTrigger');
-  const popup=document.getElementById(forId+'CalPopup');
   const panel=document.createElement('div');
   panel.className='cal-panel';panel.id='calPanel-'+forId;
-  popup.appendChild(panel);
+  document.body.appendChild(panel);
+  // Position panel relative to trigger
+  const rect=trigger.getBoundingClientRect();
+  const panelW=280;
+  let left=rect.left;
+  let top=rect.bottom+6;
+  if(left+panelW>window.innerWidth-8) left=window.innerWidth-panelW-8;
+  if(left<8) left=8;
+  if(top+340>window.innerHeight) top=rect.top-346;
+  panel.style.left=left+'px';
+  panel.style.top=top+'px';
   renderCalendarPanel(forId);
   document.addEventListener('click',calOutsideClick,{capture:true});
 }
@@ -1342,7 +1371,9 @@ function calOutsideClick(e){
   const panel=document.getElementById('calPanel-'+calState.openFor);
   const trigger=document.getElementById(calState.openFor+'CalTrigger');
   if(panel && !panel.contains(e.target) && trigger && !trigger.contains(e.target)){
-    closeAllCalendars();calState.openFor=null;
+    panel.remove();
+    document.removeEventListener('click',calOutsideClick,{capture:true});
+    calState.openFor=null;
   }
 }
 function renderCalendarPanel(forId){
@@ -1478,6 +1509,29 @@ function wireTaskEvents(listEl){
         toggleSubtask(id,sec,row.dataset.subId);
       });
     });
+    // Subtask delete buttons
+    el.querySelectorAll('.sub-del-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const subId=btn.dataset.subDel;
+        deleteSubtask(id,sec,subId);
+      });
+    });
+    // Subtask add
+    const addInp=el.querySelector(`#subAddInp-${id}`);
+    const addBtn=el.querySelector('[data-sub-add]');
+    if(addInp && addBtn){
+      const doAdd=()=>{
+        const text=addInp.value.trim();
+        if(!text)return;
+        const t=state.tasks[sec].find(x=>x.id===id);if(!t)return;
+        if(!t.subtasks)t.subtasks=[];
+        t.subtasks.push({id:uid(),text,done:false});
+        t.subtasksOpen=true;
+        save();render();
+      };
+      addBtn.addEventListener('click',doAdd);
+      addInp.addEventListener('keydown',e=>{if(e.key==='Enter')doAdd();});
+    }
     const handle=el.querySelector('.drag-handle');
     handle.addEventListener('pointerdown',(e)=>startDrag(e,el,id,sec));
     wireSwipe(el,content,id,sec);
@@ -1702,7 +1756,6 @@ document.addEventListener('keydown',(e)=>{
   if(e.key==='Escape'){
     closeCtxMenu();closeAllCalendars();
     document.getElementById('settingsPanel').style.display='none';
-    document.getElementById('archivePanel').style.display='none';
     closeMotivation();
     if(searchQuery||document.getElementById('searchRow').style.display!=='none') clearSearch();
     return;
@@ -1723,6 +1776,7 @@ function init(){
   qaSelectPriority('medium');
   render();
   checkReminders();
+  scheduleMidnightSend();
 }
 init();
 
