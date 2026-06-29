@@ -221,6 +221,134 @@ textarea::placeholder{color:var(--text3)}
 
 .footer{text-align:center;font-size:12px;color:var(--text3);margin-top:18px;letter-spacing:0.2px}
 
+/* ════════ Birthdays section ════════ */
+.bday-filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.bday-group{margin-bottom:4px}
+.bday-group-head{display:flex;align-items:center;gap:10px;margin:18px 0 10px;color:var(--text3);font-size:12px;font-weight:600}
+.bday-group:first-child .bday-group-head{margin-top:2px}
+.bday-group-head .line{flex:1;height:1px;background:var(--border)}
+.bday-group-head .count{color:var(--text3);font-weight:500;white-space:nowrap}
+.bday-card{
+  display:flex;align-items:center;gap:12px;
+  background:var(--card2);border:1px solid var(--border);border-radius:var(--r-md);
+  padding:12px 12px;margin-bottom:9px;transition:border-color 0.2s var(--ease),transform 0.2s var(--ease),box-shadow 0.2s var(--ease);
+}
+.bday-card:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,0.14)}
+.bday-avatar{
+  width:48px;height:48px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  background:var(--bg2);border:1px solid var(--border2);
+}
+.bday-avatar svg{width:100%;height:100%}
+.bday-info{flex:1;min-width:0}
+.bday-name{font-size:15px;font-weight:600;color:var(--text);margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bday-date-row{font-size:12.5px;color:var(--text3);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.bday-date-row .dot{opacity:.6}
+.bday-countdown{color:var(--mint);font-weight:500}
+.bday-countdown.today{color:var(--terra);font-weight:700}
+.bday-age{color:var(--text3)}
+.bday-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.bday-remind-chip{
+  display:flex;align-items:center;gap:4px;
+  font-size:11.5px;font-weight:600;color:var(--mint);background:var(--mint-dim);
+  border:1px solid var(--border2);border-radius:999px;padding:5px 10px;cursor:pointer;font-family:inherit;
+  white-space:nowrap;transition:all .15s var(--ease);
+}
+.bday-remind-chip:hover{border-color:var(--mint)}
+.bday-remind-chip.off{color:var(--text3);background:transparent}
+.bday-menu-btn{
+  background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;
+  padding:0;width:30px;height:30px;flex-shrink:0;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;transition:color .15s var(--ease),background .15s var(--ease);
+}
+.bday-menu-btn:hover{color:var(--text2);background:var(--border)}
+.bday-menu{
+  position:absolute;right:0;top:34px;background:var(--card2);border:1px solid var(--border2);
+  border-radius:var(--r-sm);box-shadow:0 10px 28px rgba(0,0,0,0.35);z-index:20;min-width:150px;overflow:hidden;
+}
+.bday-menu button{
+  display:block;width:100%;text-align:left;background:none;border:none;color:var(--text2);
+  font-family:inherit;font-size:13px;padding:10px 14px;cursor:pointer;transition:background .15s var(--ease);
+}
+.bday-menu button:hover{background:var(--border)}
+.bday-menu button.danger{color:var(--terra)}
+.bday-menu-wrap{position:relative}
+.bday-help-card{
+  display:flex;align-items:center;gap:13px;background:rgba(157,141,241,0.08);
+  border:1px solid var(--border);border-radius:var(--r-md);padding:13px 14px;margin-top:6px;cursor:pointer;
+  transition:border-color .2s var(--ease);
+}
+.bday-help-card:hover{border-color:var(--border2)}
+.bday-help-icon{
+  width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#9D8DF1,#6f5fd6);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px;
+}
+.bday-help-text{flex:1;font-size:13px;color:var(--text2);line-height:1.45}
+.bday-help-text b{display:block;color:var(--text);font-size:14px;margin-bottom:2px}
+.bday-help-text a{color:var(--mint);text-decoration:none}
+.bday-help-chevron{color:var(--text3);font-size:18px;flex-shrink:0}
+.bday-add-fab{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-top:16px;
+}
+.bday-add-fab .add-btn{margin-top:0;flex:1}
+.bday-fab-plus{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;border:none;cursor:pointer;
+  background:linear-gradient(135deg,#9D8DF1,#6f5fd6);color:#fff;font-size:22px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(157,141,241,0.35);
+  transition:transform 0.2s var(--ease),box-shadow 0.2s var(--ease);
+}
+.bday-fab-plus:hover{transform:translateY(-1px) scale(1.04);box-shadow:0 8px 20px rgba(157,141,241,0.45)}
+.bday-fab-plus:active{transform:scale(0.95)}
+
+/* Modal for add/edit birthday */
+.bday-modal-overlay{
+  position:fixed;inset:0;background:rgba(8,12,20,0.6);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+  display:flex;align-items:flex-end;justify-content:center;z-index:200;
+  animation:fadeIn 0.2s var(--ease) both;padding:0;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+.bday-modal{
+  width:100%;max-width:540px;background:var(--bg2);border-radius:20px 20px 0 0;
+  border:1px solid var(--border);border-bottom:none;
+  padding:20px 20px calc(20px + var(--safe-bot));
+  max-height:88vh;overflow-y:auto;
+  animation:slideUp 0.25s var(--ease) both;
+  box-shadow:0 -12px 40px rgba(0,0,0,0.4);
+}
+@media (min-width:560px){
+  .bday-modal-overlay{align-items:center}
+  .bday-modal{border-radius:var(--r-lg);border-bottom:1px solid var(--border);max-height:80vh}
+}
+.bday-modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.bday-modal-title{font-size:17px;font-weight:700;color:var(--text)}
+.bday-modal-close{background:none;border:none;color:var(--text3);font-size:22px;cursor:pointer;line-height:1;padding:4px;border-radius:6px;transition:color .15s var(--ease)}
+.bday-modal-close:hover{color:var(--text2)}
+.bday-field{margin-bottom:14px}
+.bday-field label{display:block;font-size:10.5px;font-weight:600;color:var(--text3);margin-bottom:6px;letter-spacing:0.4px;text-transform:uppercase}
+.bday-field input[type="text"],.bday-field input[type="date"]{
+  width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:var(--r-sm);
+  color:var(--text);font-family:inherit;font-size:15px;padding:11px 13px;outline:none;color-scheme:dark;
+  transition:border-color 0.2s var(--ease),box-shadow 0.2s var(--ease);
+}
+.bday-field input:focus{border-color:var(--mint);box-shadow:0 0 0 3px rgba(89,227,214,0.10)}
+.bday-field input::placeholder{color:var(--text3)}
+.bday-gender-btns{display:flex;gap:8px}
+.bday-gender-btn{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:7px;
+  border:1px solid var(--border2);border-radius:var(--r-sm);background:var(--bg);color:var(--text2);
+  font-family:inherit;font-size:13px;font-weight:600;padding:10px 8px;cursor:pointer;transition:all .15s var(--ease);
+}
+.bday-gender-btn svg{width:20px;height:20px;flex-shrink:0}
+.bday-gender-btn.sel{border-color:var(--mint);color:var(--mint);background:var(--mint-dim)}
+.bday-year-row{display:flex;align-items:center;gap:8px}
+.bday-year-row input[type="checkbox"]{width:16px;height:16px;accent-color:var(--mint);cursor:pointer}
+.bday-year-row label{margin:0;font-size:13px;color:var(--text2);text-transform:none;font-weight:500;cursor:pointer}
+.bday-remind-opts{display:flex;gap:6px;flex-wrap:wrap}
+.bday-modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+.bday-modal-delete{margin-right:auto}
+
 /* Accessibility & motion */
 button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{
   outline:2px solid var(--mint);outline-offset:2px;border-radius:4px;
@@ -595,6 +723,7 @@ button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus
     <button class="tab active" data-section="today" onclick="switchSection('today')">☀️ Сегодня <span class="badge" id="badge-today" style="display:none"></span></button>
     <button class="tab" data-section="week" onclick="switchSection('week')">📅 Неделя <span class="badge" id="badge-week" style="display:none"></span></button>
     <button class="tab" data-section="someday" onclick="switchSection('someday')">🌙 Потом <span class="badge" id="badge-someday" style="display:none"></span></button>
+    <button class="tab" data-section="birthdays" onclick="switchSection('birthdays')">🎂 ДР <span class="badge" id="badge-birthdays" style="display:none"></span></button>
   </div>
   <button class="icon-btn" id="searchBtn" onclick="toggleSearch()" title="Поиск">🔍</button>
   <button class="settings-btn" id="settingsBtn" onclick="toggleSettings()" title="Настройки">⚙️</button>
@@ -709,8 +838,112 @@ button:focus-visible,.task-text:focus-visible,input:focus-visible,textarea:focus
   </div>
 </div>
 
+<!-- Birthdays card -->
+<div class="card" id="bdayCard" style="display:none">
+  <div class="bday-filter-row" id="bdayFilterRow">
+    <button class="chip sel" data-bf="upcoming" onclick="setBdayFilter('upcoming')">Ближайшие</button>
+    <button class="chip" data-bf="all" onclick="setBdayFilter('all')">Все</button>
+    <button class="chip" data-bf="month" onclick="setBdayFilter('month')">В этом месяце</button>
+    <button class="chip" data-bf="mine" onclick="setBdayFilter('mine')">Добавленные мной</button>
+  </div>
+
+  <div id="bdayList"></div>
+
+  <div class="bday-help-card" onclick="toggleSettings()" title="Открыть настройки Telegram">
+    <div class="bday-help-icon">🔔</div>
+    <div class="bday-help-text">
+      <b>Как работают напоминания</b>
+      Мы напомним в нужный день и отправим уведомление в <a href="#" onclick="event.stopPropagation();toggleSettings()">Telegram</a> в выбранное время.
+    </div>
+    <div class="bday-help-chevron">›</div>
+  </div>
+
+  <div class="bday-add-fab">
+    <button class="add-btn" onclick="openBdayModal()">+ Добавить день рождения</button>
+    <button class="bday-fab-plus" onclick="openBdayModal()" title="Добавить день рождения">+</button>
+  </div>
+</div>
+
 <div class="footer"></div>
 </div>
+
+<!-- Birthday add/edit modal -->
+<div class="bday-modal-overlay" id="bdayModalOverlay" style="display:none" onclick="if(event.target===this)closeBdayModal()">
+  <div class="bday-modal">
+    <div class="bday-modal-head">
+      <div class="bday-modal-title" id="bdayModalTitle">Новый день рождения</div>
+      <button class="bday-modal-close" onclick="closeBdayModal()">×</button>
+    </div>
+
+    <div class="bday-field">
+      <label>Имя</label>
+      <input type="text" id="bdayNameInput" placeholder="Например, Аня Смирнова" autocomplete="off">
+    </div>
+
+    <div class="bday-field">
+      <label>Пол (для иконки)</label>
+      <div class="bday-gender-btns">
+        <button type="button" class="bday-gender-btn sel" id="bdayGenderF" onclick="selectBdayGender('f')">
+          <svg viewBox="0 0 48 48"><use href="#icon-woman"/></svg> Женщина
+        </button>
+        <button type="button" class="bday-gender-btn" id="bdayGenderM" onclick="selectBdayGender('m')">
+          <svg viewBox="0 0 48 48"><use href="#icon-man"/></svg> Мужчина
+        </button>
+      </div>
+    </div>
+
+    <div class="bday-field">
+      <label>Дата рождения</label>
+      <input type="date" id="bdayDateInput">
+    </div>
+
+    <div class="bday-field">
+      <div class="bday-year-row">
+        <input type="checkbox" id="bdayHideYear">
+        <label for="bdayHideYear">Не показывать год (не помню/не хочу указывать)</label>
+      </div>
+    </div>
+
+    <div class="bday-field">
+      <label>Напомнить заранее</label>
+      <div class="bday-remind-opts" id="bdayRemindOpts">
+        <button class="chip" data-d="0" onclick="selectBdayRemind(0)">В этот день</button>
+        <button class="chip sel" data-d="1" onclick="selectBdayRemind(1)">За 1 день</button>
+        <button class="chip" data-d="2" onclick="selectBdayRemind(2)">За 2 дня</button>
+        <button class="chip" data-d="3" onclick="selectBdayRemind(3)">За 3 дня</button>
+        <button class="chip" data-d="7" onclick="selectBdayRemind(7)">За неделю</button>
+        <button class="chip" data-d="-1" onclick="selectBdayRemind(-1)">Без напоминания</button>
+      </div>
+    </div>
+
+    <div style="font-size:11px;color:var(--text3);line-height:1.6">
+      ⏰ Напоминание о дне рождения приходит раз в год в 15:00 по Москве (через Telegram-бота, настроенного в ⚙️).
+    </div>
+
+    <div class="bday-modal-actions">
+      <button class="cancel-btn bday-modal-delete" id="bdayDeleteBtn" style="display:none" onclick="deleteBdayFromModal()">🗑️ Удалить</button>
+      <button class="cancel-btn" onclick="closeBdayModal()">Отмена</button>
+      <button class="save-btn" onclick="saveBdayFromModal()">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- Inline SVG icon defs: generic woman/man avatar icons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="icon-woman">
+      <circle cx="24" cy="24" r="24" fill="#3A2E55"/>
+      <path d="M24 10c-6.5 0-10.5 4.7-10.5 11 0 3.2 1 5.9 2.6 7.9-1 .4-1.8 1-2.3 1.8C11.3 33.6 9 38 9 41.5c0 .8.6 1.5 1.5 1.5h27c.9 0 1.5-.7 1.5-1.5 0-3.5-2.3-7.9-4.8-10.8-.5-.8-1.3-1.4-2.3-1.8 1.6-2 2.6-4.7 2.6-7.9 0-6.3-4-11-10.5-11z" fill="#D9A77A"/>
+      <path d="M24 8c-7.5 0-12 5.2-12 11.8 0 1.6.2 3 .6 4.3-.9-1.7-1.4-3.8-1.4-6.3C11.2 11 16 6 24 6s12.8 5 12.8 11.8c0 2.5-.5 4.6-1.4 6.3.4-1.3.6-2.7.6-4.3C36 13.2 31.5 8 24 8z" fill="#5B3A29"/>
+      <path d="M13 19c0-1 4-4 11-4s11 3 11 4c0-7-3-12-11-12s-11 5-11 12z" fill="#5B3A29"/>
+    </g>
+    <g id="icon-man">
+      <circle cx="24" cy="24" r="24" fill="#1E3450"/>
+      <path d="M24 11c-6 0-9.7 4.4-9.7 10.3 0 3 .9 5.6 2.4 7.4-.9.4-1.7.9-2.2 1.7C11.9 33.6 9.8 37.7 9.8 41c0 .8.6 1.5 1.5 1.5h25.4c.9 0 1.5-.7 1.5-1.5 0-3.3-2.1-7.4-4.7-10.6-.5-.8-1.3-1.3-2.2-1.7 1.5-1.8 2.4-4.4 2.4-7.4C33.7 15.4 30 11 24 11z" fill="#C68E68"/>
+      <path d="M24 8c-6.6 0-10.6 4.5-10.9 10.4-.1 1.6.1 3 .4 4 .6-3 2-4.2 2-4.2.3 1 1 1.7 1 1.7s.6-3.3 2.7-4.7c1.7 1.4 4.2 1.9 4.8 2 .6-.1 3.1-.6 4.8-2 2.1 1.4 2.7 4.7 2.7 4.7s.7-.7 1-1.7c0 0 1.4 1.2 2 4.2.3-1 .5-2.4.4-4C34.6 12.5 30.6 8 24 8z" fill="#2B2118"/>
+    </g>
+  </defs>
+</svg>
 
 <div class="toast" id="toast"></div>
 
@@ -809,13 +1042,19 @@ const EMPTY_STATES = {
   search:{emoji:'🔎',text:'Ничего не найдено. Попробуй другой запрос.'}
 };
 
-let state = {tasks:{today:[],week:[],someday:[]},note:'',archive:[],stats:{byDate:{}},motivationShownDate:null};
+let state = {tasks:{today:[],week:[],someday:[]},note:'',archive:[],stats:{byDate:{}},motivationShownDate:null,birthdays:[]};
 let tgCfg = {token:'',chatId:''};
 let activeSection = 'today';
 let activeFilter = 'all';
 let searchQuery = '';
 let saveTimer = null;
 let deferredPrompt = null;
+
+// ── Birthdays runtime state ──
+let bdayFilter = 'upcoming';
+let bdayEditId = null; // id текущего редактируемого ДР (null = добавление нового)
+let bdayDraft = {gender:'f', remindDays:1};
+let bdayIdSeq = 1;
 
 // quick-add transient state
 let qa = {priority:'medium',color:'',repeat:'',dueDate:null,remindAt:null};
@@ -903,6 +1142,7 @@ function load() {
       if(Array.isArray(d.archive)) state.archive=d.archive;
       if(d.stats) state.stats=d.stats;
       if(d.motivationShownDate!==undefined) state.motivationShownDate=d.motivationShownDate;
+      if(Array.isArray(d.birthdays)) state.birthdays=d.birthdays.map(migrateBday);
     }
     const tg = localStorage.getItem('planner-tg');
     if (tg) tgCfg = JSON.parse(tg);
@@ -910,6 +1150,16 @@ function load() {
   if(!state.stats)state.stats={byDate:{}};
   if(!state.stats.byDate)state.stats.byDate={};
   if(!state.archive)state.archive=[];
+  if(!Array.isArray(state.birthdays))state.birthdays=[];
+  bdayIdSeq = state.birthdays.reduce((m,b)=>Math.max(m,b.id||0),0)+1;
+}
+function migrateBday(b){
+  if(b.gender===undefined)b.gender='f';
+  if(b.hideYear===undefined)b.hideYear=!b.year;
+  if(b.remindDays===undefined)b.remindDays=1;
+  if(b.lastNotifiedYear===undefined)b.lastNotifiedYear=null;
+  if(b.addedByMe===undefined)b.addedByMe=true;
+  return b;
 }
 
 // ── Recurring task reset ──
@@ -1073,12 +1323,396 @@ async function doMidnightSend() {
   }
 }
 
+// ════════════════════════════════════════════════════
+// ══  BIRTHDAYS — helpers, render, modal, reminders ══
+// ════════════════════════════════════════════════════
+
+function getMoscowNow() {
+  const utcMs = Date.now() + new Date().getTimezoneOffset() * 60000;
+  return new Date(utcMs + 3 * 3600000);
+}
+
+function daysUntilBday(b) {
+  const now = getMoscowNow();
+  const todayM = now.getMonth();
+  const todayD = now.getDate();
+  const bMonth = b.month - 1; // stored 1-based
+  const bDay   = b.day;
+  let diff = (bMonth - todayM) * 30 + (bDay - todayD);
+  // Грубая, но наглядная для малых значений оценка — пересчитаем точнее:
+  const year = now.getFullYear();
+  let next = new Date(year, bMonth, bDay);
+  const today0 = new Date(year, todayM, todayD);
+  if (next < today0) next = new Date(year + 1, bMonth, bDay);
+  diff = Math.round((next - today0) / 86400000);
+  return diff;
+}
+
+function bdayDateLabel(b) {
+  const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  const days   = ['вс','пн','вт','ср','чт','пт','сб'];
+  const year = getMoscowNow().getFullYear();
+  const bMonth = b.month - 1;
+  const next = new Date(year, bMonth, b.day);
+  if (next < new Date(year, getMoscowNow().getMonth(), getMoscowNow().getDate()))
+    next.setFullYear(year + 1);
+  const dow = days[next.getDay()];
+  return `${b.day} ${months[bMonth]} (${dow})`;
+}
+
+function bdayCountdownLabel(days) {
+  if (days === 0) return 'сегодня! 🎂';
+  if (days === 1) return 'через 1 день';
+  if (days >= 2 && days <= 4) return `через ${days} дня`;
+  return `через ${days} дней`;
+}
+
+function bdayAge(b) {
+  if (b.hideYear || !b.year) return null;
+  const nextYear = getMoscowNow().getFullYear() + (daysUntilBday(b) === 0 ? 0 : 0);
+  // age at next birthday
+  const bdayThisYear = new Date(getMoscowNow().getFullYear(), b.month-1, b.day);
+  const today0 = new Date(getMoscowNow().getFullYear(), getMoscowNow().getMonth(), getMoscowNow().getDate());
+  const age = (bdayThisYear >= today0)
+    ? getMoscowNow().getFullYear() - b.year
+    : getMoscowNow().getFullYear() - b.year + 1;
+  return age;
+}
+
+function bdayAvatarSVG(gender) {
+  const id = gender === 'm' ? 'icon-man' : 'icon-woman';
+  return `<svg viewBox="0 0 48 48"><use href="#${id}"/></svg>`;
+}
+
+function setBdayFilter(f) {
+  bdayFilter = f;
+  document.querySelectorAll('#bdayFilterRow .chip').forEach(c=>c.classList.toggle('sel', c.dataset.bf===f));
+  renderBdays();
+}
+
+function filteredBdays() {
+  const all = state.birthdays.slice();
+  all.sort((a,b) => daysUntilBday(a) - daysUntilBday(b));
+  switch(bdayFilter) {
+    case 'upcoming': return all; // all sorted, grouped by week/month/later
+    case 'all':      return all;
+    case 'month': {
+      const m = getMoscowNow().getMonth() + 1;
+      return all.filter(b => {
+        const d = daysUntilBday(b);
+        return b.month === m || (d <= 31);
+      }).filter(b => {
+        // strict: current calendar month
+        const nm = getMoscowNow();
+        const end = new Date(nm.getFullYear(), nm.getMonth() + 1, 0);
+        const today0 = new Date(nm.getFullYear(), nm.getMonth(), nm.getDate());
+        const nextBday = new Date(nm.getFullYear(), b.month-1, b.day);
+        if(nextBday < today0) nextBday.setFullYear(nm.getFullYear()+1);
+        return nextBday <= end;
+      });
+    }
+    case 'mine': return all.filter(b => b.addedByMe);
+    default: return all;
+  }
+}
+
+function renderBdays() {
+  renderBadges();
+  const list = document.getElementById('bdayList');
+  const bdays = filteredBdays();
+  if (!bdays.length) {
+    list.innerHTML = `<div class="empty-state"><span class="empty-emoji">🎂</span><div class="empty-text">Дней рождения пока нет.<br>Добавь первый!</div></div>`;
+    return;
+  }
+
+  if (bdayFilter === 'upcoming') {
+    // group: this week / this month / later
+    const week  = bdays.filter(b => daysUntilBday(b) <= 7);
+    const month = bdays.filter(b => { const d=daysUntilBday(b); return d>7 && d<=31; });
+    const later = bdays.filter(b => daysUntilBday(b) > 31);
+    let html = '';
+    if (week.length) {
+      html += `<div class="bday-group"><div class="bday-group-head"><span>На этой неделе</span><span class="line"></span><span class="count">${week.length} ${pluralDR(week.length)}</span></div>`;
+      week.forEach(b => { html += bdayCardHTML(b); });
+      html += '</div>';
+    }
+    if (month.length) {
+      html += `<div class="bday-group"><div class="bday-group-head"><span>В этом месяце</span><span class="line"></span><span class="count">${month.length} ${pluralDR(month.length)}</span></div>`;
+      month.forEach(b => { html += bdayCardHTML(b); });
+      html += '</div>';
+    }
+    if (later.length) {
+      html += `<div class="bday-group"><div class="bday-group-head"><span>Позже</span><span class="line"></span><span class="count">${later.length} ${pluralDR(later.length)}</span></div>`;
+      later.forEach(b => { html += bdayCardHTML(b); });
+      html += '</div>';
+    }
+    list.innerHTML = html;
+  } else {
+    list.innerHTML = bdays.map(b => bdayCardHTML(b)).join('');
+  }
+  // wire menu buttons
+  list.querySelectorAll('.bday-menu-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = +btn.dataset.id;
+      toggleBdayMenu(id, btn);
+    });
+  });
+  list.querySelectorAll('.bday-remind-chip').forEach(chip => {
+    chip.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = +chip.dataset.id;
+      cycleBdayRemind(id);
+    });
+  });
+}
+
+function pluralDR(n) {
+  if (n % 100 >= 11 && n % 100 <= 14) return 'дней рождения';
+  const m = n % 10;
+  if (m === 1) return 'день рождения';
+  if (m >= 2 && m <= 4) return 'дня рождения';
+  return 'дней рождения';
+}
+
+function bdayCardHTML(b) {
+  const days = daysUntilBday(b);
+  const countdownCls = days === 0 ? 'bday-countdown today' : 'bday-countdown';
+  const age = bdayAge(b);
+  const ageStr = age ? ` · ${age} лет` : '';
+  const remindLabel = b.remindDays < 0 ? '🔕' : (b.remindDays === 0 ? '0 дн.' : `${b.remindDays} дн.`);
+  const remindCls = b.remindDays < 0 ? 'bday-remind-chip off' : 'bday-remind-chip';
+  return `<div class="bday-card" data-bid="${escHtml(String(b.id))}">
+    <div class="bday-avatar">${bdayAvatarSVG(b.gender)}</div>
+    <div class="bday-info">
+      <div class="bday-name">${escHtml(b.name)}</div>
+      <div class="bday-date-row">
+        <span>${bdayDateLabel(b)}</span>
+        <span class="dot">·</span>
+        <span class="${countdownCls}">${bdayCountdownLabel(days)}</span>
+        ${age ? `<span class="bday-age">${ageStr}</span>` : ''}
+      </div>
+    </div>
+    <div class="bday-actions">
+      <button class="${remindCls}" data-id="${b.id}" title="Напомнить за … дней">
+        🔔 ${remindLabel}
+      </button>
+      <div class="bday-menu-wrap">
+        <button class="bday-menu-btn" data-id="${b.id}" title="Ещё">⋮</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+let openMenuId = null;
+function toggleBdayMenu(id, btn) {
+  // close existing
+  document.querySelectorAll('.bday-menu').forEach(m=>m.remove());
+  if (openMenuId === id) { openMenuId = null; return; }
+  openMenuId = id;
+  const wrap = btn.closest('.bday-menu-wrap');
+  const menu = document.createElement('div');
+  menu.className = 'bday-menu';
+  menu.innerHTML = `
+    <button onclick="openBdayModal(${id})">✏️ Редактировать</button>
+    <button class="danger" onclick="deleteBday(${id})">🗑️ Удалить</button>`;
+  wrap.appendChild(menu);
+  const close = e => { if(!menu.contains(e.target)){ menu.remove(); openMenuId=null; document.removeEventListener('click',close); }};
+  setTimeout(()=>document.addEventListener('click', close), 10);
+}
+
+function cycleBdayRemind(id) {
+  const b = state.birthdays.find(x=>x.id===id);
+  if (!b) return;
+  const opts = [-1, 0, 1, 2, 3, 7];
+  const idx = opts.indexOf(b.remindDays);
+  b.remindDays = opts[(idx + 1) % opts.length];
+  save();
+  renderBdays();
+}
+
+function deleteBday(id) {
+  state.birthdays = state.birthdays.filter(b=>b.id!==id);
+  save();
+  renderBdays();
+  showToast('🗑️ День рождения удалён');
+}
+
+// ── Birthday modal ──
+let _bdayEditing = null;
+function openBdayModal(id) {
+  _bdayEditing = id != null ? state.birthdays.find(b=>b.id===id) : null;
+  const modal = document.getElementById('bdayModalOverlay');
+  const title = document.getElementById('bdayModalTitle');
+  const delBtn = document.getElementById('bdayDeleteBtn');
+  const nameInp = document.getElementById('bdayNameInput');
+  const dateInp = document.getElementById('bdayDateInput');
+  const hideYearChk = document.getElementById('bdayHideYear');
+
+  if (_bdayEditing) {
+    title.textContent = 'Редактировать';
+    delBtn.style.display = 'inline-flex';
+    nameInp.value = _bdayEditing.name;
+    const yy = _bdayEditing.year || 2000;
+    const mm = String(_bdayEditing.month).padStart(2,'0');
+    const dd = String(_bdayEditing.day).padStart(2,'0');
+    dateInp.value = `${yy}-${mm}-${dd}`;
+    hideYearChk.checked = !!_bdayEditing.hideYear;
+    selectBdayGender(_bdayEditing.gender || 'f');
+    selectBdayRemind(_bdayEditing.remindDays != null ? _bdayEditing.remindDays : 1);
+  } else {
+    title.textContent = 'Новый день рождения';
+    delBtn.style.display = 'none';
+    nameInp.value = '';
+    dateInp.value = '';
+    hideYearChk.checked = false;
+    selectBdayGender('f');
+    selectBdayRemind(1);
+  }
+
+  modal.style.display = 'flex';
+  setTimeout(() => nameInp.focus(), 100);
+}
+
+function closeBdayModal() {
+  document.getElementById('bdayModalOverlay').style.display = 'none';
+  _bdayEditing = null;
+}
+
+function selectBdayGender(g) {
+  bdayDraft.gender = g;
+  document.getElementById('bdayGenderF').classList.toggle('sel', g==='f');
+  document.getElementById('bdayGenderM').classList.toggle('sel', g==='m');
+}
+
+function selectBdayRemind(d) {
+  bdayDraft.remindDays = d;
+  document.querySelectorAll('#bdayRemindOpts .chip').forEach(c=>c.classList.toggle('sel', +c.dataset.d===d));
+}
+
+function saveBdayFromModal() {
+  const name = document.getElementById('bdayNameInput').value.trim();
+  if (!name) { document.getElementById('bdayNameInput').focus(); showToast('✗ Введи имя', true); return; }
+  const dateVal = document.getElementById('bdayDateInput').value;
+  if (!dateVal) { document.getElementById('bdayDateInput').focus(); showToast('✗ Выбери дату', true); return; }
+  const parts = dateVal.split('-');
+  const year  = +parts[0];
+  const month = +parts[1];
+  const day   = +parts[2];
+  const hideYear = document.getElementById('bdayHideYear').checked;
+
+  if (_bdayEditing) {
+    _bdayEditing.name  = name;
+    _bdayEditing.year  = year;
+    _bdayEditing.month = month;
+    _bdayEditing.day   = day;
+    _bdayEditing.hideYear = hideYear;
+    _bdayEditing.gender = bdayDraft.gender;
+    _bdayEditing.remindDays = bdayDraft.remindDays;
+    _bdayEditing.addedByMe = true;
+  } else {
+    state.birthdays.push({
+      id: bdayIdSeq++,
+      name, year, month, day, hideYear,
+      gender: bdayDraft.gender,
+      remindDays: bdayDraft.remindDays,
+      addedByMe: true,
+      lastNotifiedYear: null
+    });
+  }
+
+  save();
+  closeBdayModal();
+  renderBdays();
+  showToast('🎂 День рождения сохранён');
+}
+
+function deleteBdayFromModal() {
+  if (!_bdayEditing) return;
+  deleteBday(_bdayEditing.id);
+  closeBdayModal();
+}
+
+// ── Birthday TG reminders (fires at 15:00 MSK daily check) ──
+function getMoscow15hMs() {
+  // Today's 15:00 Moscow time in local ms
+  const moscowOffset = 3 * 60; // minutes
+  const now = new Date();
+  const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+  const moscowMs = utcMs + moscowOffset * 60000;
+  const moscowNow = new Date(moscowMs);
+  const target = new Date(moscowMs);
+  target.setHours(15, 0, 0, 0);
+  if (target <= moscowNow) target.setDate(target.getDate() + 1); // tomorrow if past
+  // convert back to local
+  return target.getTime() - moscowOffset * 60000 - now.getTimezoneOffset() * 60000;
+}
+
+function scheduleBdayReminders() {
+  const nowMs = Date.now();
+  const fireMs = getMoscow15hMs();
+  const delay = fireMs - nowMs;
+  setTimeout(async () => {
+    await checkBdayReminders();
+    scheduleBdayReminders(); // reschedule for next day
+  }, delay);
+}
+
+async function checkBdayReminders() {
+  if (!tgCfg.token || !tgCfg.chatId) return;
+  if (!state.birthdays.length) return;
+  const msk = getMoscowNow();
+  const todayYear  = msk.getFullYear();
+  const todayMonth = msk.getMonth() + 1;
+  const todayDay   = msk.getDate();
+
+  for (const b of state.birthdays) {
+    if (b.remindDays < 0) continue; // no reminder wanted
+
+    // target send date = birthday - remindDays
+    const bdayDate = new Date(todayYear, b.month-1, b.day);
+    if (bdayDate < new Date(todayYear, todayMonth-1, todayDay)) bdayDate.setFullYear(todayYear+1);
+    const sendDate = new Date(bdayDate);
+    sendDate.setDate(sendDate.getDate() - b.remindDays);
+
+    const sendDateStr = `${sendDate.getFullYear()}-${String(sendDate.getMonth()+1).padStart(2,'0')}-${String(sendDate.getDate()).padStart(2,'0')}`;
+    const todayStr2   = `${todayYear}-${String(todayMonth).padStart(2,'0')}-${String(todayDay).padStart(2,'0')}`;
+
+    if (sendDateStr !== todayStr2) continue;
+    // Don't double-send same calendar year
+    if (b.lastNotifiedYear === todayYear) continue;
+
+    const age = bdayAge(b);
+    const ageStr = age ? ` (исполняется ${age} ${pluralLet(age)})` : '';
+    const remindStr = b.remindDays === 0 ? 'Сегодня' : `Через ${b.remindDays} ${b.remindDays===1?'день':(b.remindDays<=4?'дня':'дней')}`;
+    const msg = `🎂 <b>${remindStr} день рождения!</b>\n\n👤 <b>${b.name}</b>${ageStr}\n📅 ${b.day} ${['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'][b.month-1]}`;
+
+    const ok = await sendTg(msg);
+    if (ok) {
+      b.lastNotifiedYear = todayYear;
+      save();
+    }
+  }
+}
+
+function pluralLet(n) {
+  if (n % 100 >= 11 && n % 100 <= 14) return 'лет';
+  const m = n % 10;
+  if (m === 1) return 'год';
+  if (m >= 2 && m <= 4) return 'года';
+  return 'лет';
+}
+
 // ── Section / filter / search ──
 function switchSection(s) {
   activeSection=s;
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.section===s));
   clearSearch(true);
-  render();
+  const isBday = s==='birthdays';
+  document.getElementById('mainCard').style.display = isBday ? 'none' : 'block';
+  document.getElementById('bdayCard').style.display = isBday ? 'block' : 'none';
+  document.getElementById('searchBtn').style.display = isBday ? 'none' : 'flex';
+  if(isBday) renderBdays(); else render();
 }
 function setFilter(f){
   activeFilter=f;
@@ -1165,6 +1799,11 @@ function renderBadges() {
     const el=document.getElementById('badge-'+sec);
     const c=state.tasks[sec].filter(t=>!t.done).length; el.textContent=c; el.style.display=c>0?'inline':'none';
   });
+  const bEl=document.getElementById('badge-birthdays');
+  if(bEl){
+    const upcoming = state.birthdays.filter(b=>daysUntilBday(b)<=7).length;
+    bEl.textContent=upcoming; bEl.style.display=upcoming>0?'inline':'none';
+  }
 }
 function renderProgress() {
   if(searchQuery){document.getElementById('progressWrap').style.display='none';return;}
@@ -1708,6 +2347,7 @@ document.addEventListener('keydown',(e)=>{
     closeCtxMenu();closeAllCalendars();
     document.getElementById('settingsPanel').style.display='none';
     closeMotivation();
+    if(document.getElementById('bdayModalOverlay').style.display!=='none') { closeBdayModal(); return; }
     if(searchQuery||document.getElementById('searchRow').style.display!=='none') clearSearch();
     return;
   }
@@ -1728,6 +2368,8 @@ function init(){
   render();
   checkReminders();
   scheduleMidnightSend();
+  scheduleBdayReminders();
+  checkBdayReminders(); // also check on startup (in case missed)
 }
 init();
 
