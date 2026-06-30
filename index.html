@@ -1750,7 +1750,7 @@ function clearSearch(skipUI){
   const row=document.getElementById('searchRow');
   if(row){row.classList.remove('has-val'); if(!skipUI)row.style.display='none';}
   document.getElementById('searchBtn').classList.remove('active');
-  render();
+  if(!skipUI){ if(activeSection==='birthdays') renderBdays(); else render(); }
 }
 
 // ── Stats ──
@@ -1784,6 +1784,7 @@ function unrecordCompletion(dateStr){
 
 // ── Render pipeline ──
 function render() {
+  if(activeSection==='birthdays'){ renderBdays(); return; }
   renderBadges();
   document.getElementById('filterRow').style.display = searchQuery? 'none':'flex';
   document.getElementById('quickAdd').style.display = searchQuery? 'none':'flex';
@@ -1806,7 +1807,7 @@ function renderBadges() {
   }
 }
 function renderProgress() {
-  if(searchQuery){document.getElementById('progressWrap').style.display='none';return;}
+  if(searchQuery||activeSection==='birthdays'){document.getElementById('progressWrap').style.display='none';return;}
   const tasks=state.tasks[activeSection]; const total=tasks.length; const done=tasks.filter(t=>t.done).length;
   const wrap=document.getElementById('progressWrap');
   if (!total) { wrap.style.display='none'; return; }
