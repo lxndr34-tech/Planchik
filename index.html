@@ -1270,19 +1270,16 @@ function checkReminders() {
 // Sends "today" notes to Telegram at 00:00 Moscow time (UTC+3)
 // and clears the note after successful send. Fires only once per day.
 function getMoscowMidnightMs() {
-  // Moscow = UTC+3, midnight = 21:00 UTC previous day
-  const now = new Date();
-  // Calculate current Moscow date
-  const moscowOffset = 3 * 60; // minutes
-  const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
-  const moscowMs = utcMs + moscowOffset * 60000;
-  const moscowNow = new Date(moscowMs);
-  // Next midnight in Moscow
-  const moscowMidnight = new Date(moscowMs);
-  moscowMidnight.setHours(0,0,0,0);
-  moscowMidnight.setDate(moscowMidnight.getDate()+1);
-  // Convert back to local ms
-  return moscowMidnight.getTime() - moscowOffset * 60000 - now.getTimezoneOffset() * 60000;
+  // Следующая полночь по Москве (UTC+3) в миллисекундах UTC
+  const MSK_MS = 3 * 3600 * 1000;
+  const nowUtcMs = Date.now();
+  const mskNowMs = nowUtcMs + MSK_MS;
+  // Начало текущих суток по МСК (в мс UTC)
+  const mskDayStart = Math.floor(mskNowMs / 86400000) * 86400000;
+  // Следующая полночь МСК = начало следующих суток МСК
+  const mskNextMidnight = mskDayStart + 86400000;
+  // Переводим обратно в UTC ms (вычитаем смещение)
+  return mskNextMidnight - MSK_MS;
 }
 
 function scheduleMidnightSend() {
@@ -1297,28 +1294,35 @@ function scheduleMidnightSend() {
 
 async function doMidnightSend() {
   if (!tgCfg.token || !tgCfg.chatId) return;
-  // Check if already sent today (Moscow date)
-  const moscowOffset = 3 * 60;
-  const utcMs = Date.now() + new Date().getTimezoneOffset() * 60000;
-  const moscowMs = utcMs + moscowOffset * 60000;
-  const moscowDateStr = new Date(moscowMs).toISOString().slice(0,10);
+
+  // Дата по Москве (UTC+3) — без getTimezoneOffset, он ненадёжен в PWA/WebView
+  const MSK_MS = 3 * 3600 * 1000;
+  const moscowDateStr = new Date(Date.now() + MSK_MS).toISOString().slice(0, 10);
+
   const lastSentKey = 'planner-midnight-sent';
   const lastSent = localStorage.getItem(lastSentKey);
-  if (lastSent === moscowDateStr) return;
-  // Only the notes field is sent. If it's empty, there's nothing to send.
+  if (lastSent === moscowDateStr) return; // уже отправляли сегодня
+
   const note = (state.note || '').trim();
   if (!note) {
     localStorage.setItem(lastSentKey, moscowDateStr);
     return;
   }
-  const msg = `📝 <b>Заметки на день (${moscowDateStr})</b>\n\n<i>${note}</i>`;
+
+  // Подпись: дата уходящего дня (вчера по МСК)
+  const labelDate = lastSent || new Date(Date.now() + MSK_MS - 86400000).toISOString().slice(0, 10);
+  const msg = `📝 <b>Заметки на день (${labelDate})</b>\n\n<i>${note}</i>`;
   const ok = await sendTg(msg.trim());
+
   if (ok) {
     localStorage.setItem(lastSentKey, moscowDateStr);
-    // Clear only the notes field after a successful send
     state.note = '';
     save();
-    render();
+    // Обновляем DOM напрямую — render() не вызываем, он крашит при activeSection='birthdays'
+    const ta = document.getElementById('noteText');
+    if (ta) ta.value = '';
+    const cc = document.getElementById('noteCharCount');
+    if (cc) cc.textContent = '0 символов';
     showToast('📬 Заметка дня отправлена в Telegram');
   }
 }
